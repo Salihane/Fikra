@@ -5,5 +5,5 @@ import { Component } from '@angular/core';
   template: '<task></task>'
 })
 export class AppComponent {
-  title = 'Fikra'; // test
+  title = 'Fikra';
 }

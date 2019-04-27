@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Fikra.DAL.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Entities = Fikra.Model.Entities;
 
 namespace Fikra.API.Controllers
 {
@@ -12,21 +13,21 @@ namespace Fikra.API.Controllers
     [ApiController]
     public class TasksController : ControllerBase
     {
-        private readonly IRepository<Model.Task, Guid> _tasksRepo;
+        private readonly IRepository<Entities.Task, Guid> _tasksRepo;
 
-        public TasksController(IRepository<Model.Task, Guid> tasksRepo)
+        public TasksController(IRepository<Entities.Task, Guid> tasksRepo)
         {
             _tasksRepo = tasksRepo;
         }
 
         [HttpGet]
-        public IEnumerable<Model.Task> Get()
+        public IEnumerable<Entities.Task> Get()
         {
             return _tasksRepo.GetAll();
         }
 
         [HttpPost]
-        public async Task Post([FromBody]Model.Task task)
+        public async Task Post([FromBody]Entities.Task task)
         {
             _tasksRepo.Add(task);
             await _tasksRepo.SaveChangesAsync();

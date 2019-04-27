@@ -1,5 +1,6 @@
 ﻿using Fikra.DAL.Interfaces;
 using Fikra.Model;
+using Fikra.Model.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

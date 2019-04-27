@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Fikra.Model.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Fikra.Model
+namespace Fikra.Model.Entities
 {
     public class Task : IEntity<Guid>
     {

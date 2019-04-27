@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable()
 export class TaskApiService {
     constructor(private http: HttpClient) { }
-    taskApiUrl: string = 'https://localhost:44386/api/tasks';
+    taskApiUrl: string = 'https://localhost:44317/api/tasks';
 
     saveTask(task: any) {
         this.http.post(this.taskApiUrl, task)
