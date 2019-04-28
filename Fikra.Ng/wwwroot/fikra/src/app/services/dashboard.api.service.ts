@@ -34,4 +34,9 @@ export class DashboardApiService {
     selectDashboard(dashboard: Dashboard){
         this.selectedDashboard.next(dashboard);
     }
+
+    loadDashboardTasks(dashboardId: number){
+        let dashboardTasksUrl: string = `${this.dashboardApiUrl}/${dashboardId}/tasks`;
+        return this.http.get(dashboardTasksUrl);
+    }
 }

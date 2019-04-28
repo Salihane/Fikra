@@ -8,3 +8,7 @@
 .orange{
     color: #FF9800;
 }
+
+mat-grid-tile{
+    border: 1px solid #f5f5f5;
+}

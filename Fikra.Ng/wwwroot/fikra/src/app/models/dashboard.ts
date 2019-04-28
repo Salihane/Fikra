@@ -1,4 +1,4 @@
-import { Task } from './task';
+import { DashboardTask } from './dashboardtask';
 import { Comment } from './comment';
 
 export class Dashboard{
@@ -6,7 +6,7 @@ export class Dashboard{
     createdon: Date;
     modifiedon: Date;
     name: string;
-    tasks: Array<Task>;
+    tasks: Array<DashboardTask>;
     comments: Array<Comment>;
 
     constructor(){

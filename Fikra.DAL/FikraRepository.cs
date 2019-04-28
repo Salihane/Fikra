@@ -60,5 +60,11 @@ namespace Fikra.DAL
         {
             _context.Entry(entity).State = EntityState.Modified;
         }
+
+        public IQueryable<T> SearchFor(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+        {
+            var query = SearchFor(predicate);
+            return includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
+        }
     }
 }

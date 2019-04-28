@@ -10,7 +10,8 @@ import {
   MatCardModule,
   MatDatepickerModule,
   MatNativeDateModule,
-  MatListModule
+  MatListModule,
+  MatGridListModule
 } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -21,6 +22,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashboardsComponent } from './dashboards/dashboards.component';
 import { TaskComponent } from './task/task.component';
 import { TasksComponent } from './tasks/tasks.component';
+import { DashboardTaskComponent } from './dashboardtask/dashboardtask.component';
+import { DashboardTasksComponent } from './dashboardtasks/dashboardtasks.component';
 import { TaskApiService } from './services/task.api.service';
 import { DashboardApiService } from './services/dashboard.api.service';
 import { DateFormatterService } from './services/date.formatter.service';
@@ -33,7 +36,9 @@ import { DateFormatterService } from './services/date.formatter.service';
     DashboardComponent,
     DashboardsComponent,
     TaskComponent,
-    TasksComponent
+    TasksComponent,
+    DashboardTaskComponent,
+    DashboardTasksComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +53,8 @@ import { DateFormatterService } from './services/date.formatter.service';
     MatCardModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatListModule
+    MatListModule,
+    MatGridListModule
   ],
   providers: [
     TaskApiService,

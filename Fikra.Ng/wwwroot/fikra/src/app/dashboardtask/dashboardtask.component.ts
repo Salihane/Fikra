@@ -1,18 +1,18 @@
-import { Task } from './../models/task';
+import { DashboardTask } from './../models/dashboardtask';
 import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TaskApiService } from '../services/task.api.service';
 import { DateFormatterService } from '../services/date.formatter.service';
 
 @Component({
-  selector: 'task',
-  templateUrl: './task.component.html'
+  selector: 'dashboardtask',
+  templateUrl: './dashboardtask.component.html'
 })
-export class TaskComponent {
+export class DashboardTaskComponent {
   duedate;
 
   @Input()
-  task: Task;
+  task: DashboardTask;
 
   constructor(
     private taskApi: TaskApiService,
@@ -20,7 +20,7 @@ export class TaskComponent {
 
   ngOnInit() {
     this.duedate = new FormControl(new Date());
-    this.task = new Task();
+    this.task = new DashboardTask();
     this.taskApi.taskSelected.subscribe(task => this.task = task);
   }
 
@@ -34,6 +34,6 @@ export class TaskComponent {
   }
 
   private reset(): void {
-    this.task = new Task();
+    this.task = new DashboardTask();
   }
 }

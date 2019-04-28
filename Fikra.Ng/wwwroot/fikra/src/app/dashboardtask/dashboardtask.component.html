@@ -1,0 +1,40 @@
+<mat-card>
+        <mat-card-title>
+            <span *ngIf="task.id">Edit</span>
+            <span *ngIf="!task.id">New</span>
+            Task
+        </mat-card-title>
+        <mat-card-content>
+          <form>
+            <mat-form-field class="full-width">
+              <input [(ngModel)]="task.name" name="task-name" matInput
+                placeholder="Task">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <input [(ngModel)]="task.id" name="task-id" matInput placeholder="Id">
+            </mat-form-field>
+            <!-- <mat-form-field class="full-width">
+              <input matInput [matDatepicker]="duepicker"
+                placeholder="Due date" [formControl]="duedate"
+                (click)="duepicker.open()">
+              <mat-datepicker-toggle matSuffix [for]="duepicker"></mat-datepicker-toggle>
+              <mat-datepicker #duepicker></mat-datepicker>
+            </mat-form-field> -->
+            <mat-form-field class="full-width">
+              <input matInput [matDatepicker]="duepicker"
+                placeholder="Due date" [(ngModel)]="task.due"
+                name="task-due" (click)="duepicker.open()">
+              <mat-datepicker-toggle matSuffix [for]="duepicker"></mat-datepicker-toggle>
+              <mat-datepicker #duepicker></mat-datepicker>
+            </mat-form-field>
+      
+          </form>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-stroked-button color="primary" *ngIf="!task.id" (click)="save()" mat-button>Save</button>
+            <button mat-stroked-button color="primary" *ngIf="task.id" (click)="update()" mat-button>Update</button>
+            <span>{{task.id}}</span>
+            <button mat-stroked-button color="accent" *ngIf="task.id" (click)="reset()" mat-button>Cancel</button>
+        </mat-card-actions>
+      </mat-card>
+      

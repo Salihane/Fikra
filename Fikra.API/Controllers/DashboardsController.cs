@@ -48,5 +48,20 @@ namespace Fikra.API.Controllers
 
             return Ok(dashboard);
         }
+
+        [HttpGet("{id}/tasks")]
+        public IActionResult Get(int id)
+        {
+            var dashboard = _dashboardRepo.SearchFor(x => x.Id.Equals(id), y => y.Tasks);
+
+            if (dashboard == null)
+            {
+                return BadRequest("The requested dashboard couldn't be found");
+            }
+
+            var tasks = dashboard.FirstOrDefault().Tasks;
+
+            return Ok(tasks);
+        }
     }
 }

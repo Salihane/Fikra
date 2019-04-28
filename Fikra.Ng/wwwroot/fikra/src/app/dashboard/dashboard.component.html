@@ -16,10 +16,12 @@
           </form>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-stroked-button color="primary" *ngIf="!dashboard.id" (click)="save()" mat-button>Save</button>
-            <button mat-stroked-button color="primary" *ngIf="dashboard.id" (click)="update()" mat-button>Update</button>
-            <span>{{dashboard.id}}</span>
-            <button mat-stroked-button color="accent" *ngIf="dashboard.id" (click)="reset()" mat-button>Cancel</button>
+            <button mat-stroked-button color="primary" 
+            *ngIf="!dashboard.id" (click)="save()" mat-button>Save</button>
+            <button mat-stroked-button color="primary" 
+            *ngIf="dashboard.id" (click)="update()" mat-button>Update</button>
+            <button mat-stroked-button color="accent" 
+            *ngIf="dashboard.id" (click)="reset()" mat-button>Cancel</button>
         </mat-card-actions>
       </mat-card>
       
