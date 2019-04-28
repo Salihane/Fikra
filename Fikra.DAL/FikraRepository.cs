@@ -61,6 +61,8 @@ namespace Fikra.DAL
             _context.Entry(entity).State = EntityState.Modified;
         }
 
+        // Solution for including childs found here: https://gist.github.com/oneillci/3205384
+        // To include subchilds (not implemented yet) check here: https://github.com/digipolisantwerp/dataaccess_aspnetcore
         public IQueryable<T> SearchFor(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
         {
             var query = SearchFor(predicate);
