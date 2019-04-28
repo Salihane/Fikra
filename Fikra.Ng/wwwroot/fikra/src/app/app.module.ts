@@ -4,23 +4,31 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
+  MatToolbarModule,
   MatButtonModule,
   MatInputModule,
   MatCardModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatListModule
 } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { NavComponent } from './nav/nav.component';
+import { HomeComponent } from './home/home.component';
 import { TaskComponent } from './task/task.component';
+import { TasksComponent } from './tasks/tasks.component';
 import { TaskApiService } from './services/task.api.service';
 import { DateFormatterService } from './services/date.formatter.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TaskComponent
+    NavComponent,
+    HomeComponent,
+    TaskComponent,
+    TasksComponent
   ],
   imports: [
     BrowserModule,
@@ -29,11 +37,13 @@ import { DateFormatterService } from './services/date.formatter.service';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    MatToolbarModule,
     MatButtonModule,
     MatInputModule,
     MatCardModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatListModule
   ],
   providers: [
     TaskApiService,

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  template: '<task></task>'
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
   title = 'Fikra';

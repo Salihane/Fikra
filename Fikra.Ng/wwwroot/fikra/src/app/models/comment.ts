@@ -1,12 +1,12 @@
 export class Comment{
-    Id: string;
-    CreatedOn: Date;
-    ModifiedOn: Date;
-    Content: string;
+    id: string;
+    createdon: Date;
+    modifiedon: Date;
+    content: string;
 
     constructor(){
-        this.CreatedOn = new Date();
-        this.ModifiedOn = new Date();
-        this.Content = '';
+        this.createdon = new Date();
+        this.modifiedon = new Date();
+        this.content = '';
     }
 }
