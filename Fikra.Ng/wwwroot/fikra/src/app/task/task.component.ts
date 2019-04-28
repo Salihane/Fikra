@@ -16,8 +16,7 @@ export class TaskComponent {
 
   constructor(
     private taskApi: TaskApiService,
-    private dateFormatter: DateFormatterService) {
-  }
+    private dateFormatter: DateFormatterService) { }
 
   ngOnInit() {
     this.duedate = new FormControl(new Date());
@@ -31,7 +30,6 @@ export class TaskComponent {
   }
 
   private update(): void {
-    console.log("***To update book***" + this.task);
     this.taskApi.updateTask(this.task);
   }
 

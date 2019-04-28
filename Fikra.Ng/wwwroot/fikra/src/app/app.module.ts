@@ -17,9 +17,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 import { HomeComponent } from './home/home.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardsComponent } from './dashboards/dashboards.component';
 import { TaskComponent } from './task/task.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { TaskApiService } from './services/task.api.service';
+import { DashboardApiService } from './services/dashboard.api.service';
 import { DateFormatterService } from './services/date.formatter.service';
 
 @NgModule({
@@ -27,6 +30,8 @@ import { DateFormatterService } from './services/date.formatter.service';
     AppComponent,
     NavComponent,
     HomeComponent,
+    DashboardComponent,
+    DashboardsComponent,
     TaskComponent,
     TasksComponent
   ],
@@ -47,6 +52,7 @@ import { DateFormatterService } from './services/date.formatter.service';
   ],
   providers: [
     TaskApiService,
+    DashboardApiService,
     DateFormatterService,
     MatDatepickerModule
   ],

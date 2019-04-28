@@ -31,6 +31,11 @@ namespace Fikra.DAL
             return _dbSet;
         }
 
+        public async Task<long> CountAsync()
+        {
+            return await _dbSet.LongCountAsync();
+        }
+
         public async Task<T> GetByIdAsync(K id)
         {
             return await _dbSet.FindAsync(id);

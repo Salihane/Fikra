@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { Task } from '../models/task';
 import { TaskApiService } from '../services/task.api.service';
-import { Observable } from 'rxjs';
 
 @Component({
     selector: 'tasks',

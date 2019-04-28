@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Fikra.DAL;
 using Fikra.DAL.Interfaces;
 using Microsoft.AspNetCore.Builder;
@@ -38,6 +39,8 @@ namespace Fikra.API
 
             services.AddDbContext<FikraContext>(options => options.UseInMemoryDatabase("fikra"));
             services.AddScoped(typeof(IRepository<,>), typeof(FikraRepository<,>));
+            services.AddTransient<FikraContextSeedData>();
+            services.AddAutoMapper();
 
             services
                 .AddMvc()
@@ -45,7 +48,7 @@ namespace Fikra.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, FikraContextSeedData dataSeeder)
         {
             if (env.IsDevelopment())
             {
@@ -59,6 +62,8 @@ namespace Fikra.API
             app.UseCors("Cors");
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            dataSeeder.EnsureSeedDataAsync().Wait();
         }
     }
 }

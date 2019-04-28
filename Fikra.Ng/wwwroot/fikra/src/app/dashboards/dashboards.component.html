@@ -1,0 +1,12 @@
+<mat-card>
+        <mat-card-content>
+            <mat-list role="list" *ngFor="let dashboard of dashboards">
+                <mat-list-item (click)="dashboardApi.selectDashboard(dashboard)">
+                    <span>{{dashboard.name}}</span>
+                </mat-list-item>
+            </mat-list>
+        </mat-card-content>
+        <mat-card-actions>
+            Actions here
+        </mat-card-actions>
+    </mat-card>

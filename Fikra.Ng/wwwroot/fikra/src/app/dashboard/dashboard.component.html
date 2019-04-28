@@ -1,0 +1,25 @@
+<mat-card>
+        <mat-card-title>
+            <span *ngIf="dashboard.id">Edit</span>
+            <span *ngIf="!dashboard.id">New</span>
+            Dashboard
+        </mat-card-title>
+        <mat-card-content>
+          <form>
+            <mat-form-field class="full-width">
+              <input [(ngModel)]="dashboard.name" name="dashboard-name" matInput
+                placeholder="Dashboard">
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <input [(ngModel)]="dashboard.id" name="dashboard-id" matInput placeholder="Id">
+            </mat-form-field>
+          </form>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-stroked-button color="primary" *ngIf="!dashboard.id" (click)="save()" mat-button>Save</button>
+            <button mat-stroked-button color="primary" *ngIf="dashboard.id" (click)="update()" mat-button>Update</button>
+            <span>{{dashboard.id}}</span>
+            <button mat-stroked-button color="accent" *ngIf="dashboard.id" (click)="reset()" mat-button>Cancel</button>
+        </mat-card-actions>
+      </mat-card>
+      

@@ -14,5 +14,6 @@ namespace Fikra.DAL.Interfaces
         IQueryable<T> GetAll();
         Task<T> GetByIdAsync(K id);
         IQueryable<T> SearchFor(Expression<Func<T, bool>> predicate);
+        Task<long> CountAsync();
     }
 }
