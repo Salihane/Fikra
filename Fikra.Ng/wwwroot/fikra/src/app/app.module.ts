@@ -11,7 +11,8 @@ import {
   MatDatepickerModule,
   MatNativeDateModule,
   MatListModule,
-  MatGridListModule
+  MatGridListModule,
+  MatDialogModule
 } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -23,7 +24,7 @@ import { DashboardsComponent } from './dashboards/dashboards.component';
 import { TaskComponent } from './task/task.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { DashboardTaskComponent } from './dashboardtask/dashboardtask.component';
-import { DashboardTasksComponent } from './dashboardtasks/dashboardtasks.component';
+import { DashboardTasksComponent, AddDashboardTaskDialog } from './dashboardtasks/dashboardtasks.component';
 import { TaskApiService } from './services/task.api.service';
 import { DashboardApiService } from './services/dashboard.api.service';
 import { DateFormatterService } from './services/date.formatter.service';
@@ -38,7 +39,11 @@ import { DateFormatterService } from './services/date.formatter.service';
     TaskComponent,
     TasksComponent,
     DashboardTaskComponent,
-    DashboardTasksComponent
+    DashboardTasksComponent,
+    AddDashboardTaskDialog
+  ],
+  entryComponents: [
+    AddDashboardTaskDialog
   ],
   imports: [
     BrowserModule,
@@ -54,7 +59,8 @@ import { DateFormatterService } from './services/date.formatter.service';
     MatDatepickerModule,
     MatNativeDateModule,
     MatListModule,
-    MatGridListModule
+    MatGridListModule,
+    MatDialogModule
   ],
   providers: [
     TaskApiService,

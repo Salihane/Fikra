@@ -1,11 +1,25 @@
 <mat-card>
     <mat-card-content>
+        <ol>
+            <li>
+                <mat-form-field>
+                    <input matInput [(ngModel)]="name" placeholder="What's your
+                        name?">
+                </mat-form-field>
+            </li>
+            <li>
+                <button mat-raised-button (click)="openDialog()">Pick one</button>
+            </li>
+            <li *ngIf="animal">
+                You chose: <i>{{animal}}</i>
+            </li>
+        </ol>
         <mat-list role="list" *ngFor="let task of tasks">
             <mat-list-item (click)="taskApi.selectTask(task)">
                 <span>{{task.name}}</span>&nbsp;-&nbsp;
                 <mat-form-field *ngIf="task.due">
-                    <input matInput [matDatepicker]="duepicker" 
-                    [(ngModel)]="task.due" name="task-due" disabled>
+                    <input matInput [matDatepicker]="duepicker"
+                        [(ngModel)]="task.due" name="task-due" disabled>
                 </mat-form-field>
                 <span class="orange" *ngIf="!task.due">No due date</span>
             </mat-list-item>

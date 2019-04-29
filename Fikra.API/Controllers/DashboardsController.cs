@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Fikra.DAL.Interfaces;
@@ -21,13 +22,13 @@ namespace Fikra.API.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Dashboard> Get()
+        public IEnumerable<Dashboard> GetAllDashboards()
         {
             return _dashboardRepo.GetAll();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Dashboard dashboard)
+        public async Task<IActionResult> PostDashboard([FromBody] Dashboard dashboard)
         {
             _dashboardRepo.Add(dashboard);
             await _dashboardRepo.SaveChangesAsync();
@@ -36,7 +37,7 @@ namespace Fikra.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] Dashboard dashboard)
+        public async Task<IActionResult> PutDashboard(int id, [FromBody] Dashboard dashboard)
         {
             if (id != dashboard.Id)
             {
@@ -50,18 +51,46 @@ namespace Fikra.API.Controllers
         }
 
         [HttpGet("{id}/tasks")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> GetDashboardTask(int id)
         {
-            var dashboard = _dashboardRepo.SearchFor(x => x.Id.Equals(id), y => y.Tasks);
+            var dashboard = await _dashboardRepo.SearchForAsync(x => x.Id.Equals(id), y => y.Tasks);
 
             if (dashboard == null)
             {
                 return BadRequest("The requested dashboard couldn't be found");
             }
 
-            var tasks = dashboard.FirstOrDefault().Tasks;
+            var tasks = dashboard.Single().Tasks;
 
             return Ok(tasks);
         }
+
+        [HttpPost("{id}/tasks")]
+        public async Task<IActionResult> PostDashboardTask(int id, [FromBody]DashboardTask task)
+        {
+            var dashboardSearch = await _dashboardRepo
+                .SearchForAsync(x => x.Id.Equals(id), y => y.Tasks);
+
+            if (dashboardSearch == null)
+            {
+                return BadRequest("The requested dashboard couldn't be found");
+            }
+
+            var dashboard = dashboardSearch.Single();
+
+            var taskExists = dashboard.Tasks
+                .FirstOrDefault(x => x.Name.Equals(task.Name, StringComparison.CurrentCultureIgnoreCase)) != null;
+
+            if (taskExists)
+            {
+                return BadRequest("A task with the same name exists already!");
+            }
+            
+            dashboard.Tasks.Add(task);
+            await _dashboardRepo.SaveChangesAsync();
+
+            return Ok(task);
+        }
+
     }
 }

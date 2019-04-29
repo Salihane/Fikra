@@ -5,7 +5,7 @@ import { TaskApiService } from '../services/task.api.service';
 import { DateFormatterService } from '../services/date.formatter.service';
 
 @Component({
-  selector: 'dashboardtask',
+  selector: 'dashboard-task',
   templateUrl: './dashboardtask.component.html'
 })
 export class DashboardTaskComponent {

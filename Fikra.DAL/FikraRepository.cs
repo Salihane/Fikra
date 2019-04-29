@@ -51,9 +51,9 @@ namespace Fikra.DAL
             return (await _context.SaveChangesAsync()) > 0;
         }
 
-        public IQueryable<T> SearchFor(Expression<Func<T, bool>> predicate)
+        public async Task<IQueryable<T>> SearchForAsync(Expression<Func<T, bool>> predicate)
         {
-            return _dbSet.Where(predicate);
+            return await Task.Run(() => _dbSet.Where(predicate));
         }
 
         public void Update(T entity)
@@ -63,10 +63,11 @@ namespace Fikra.DAL
 
         // Solution for including childs found here: https://gist.github.com/oneillci/3205384
         // To include subchilds (not implemented yet) check here: https://github.com/digipolisantwerp/dataaccess_aspnetcore
-        public IQueryable<T> SearchFor(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+        public async Task<IQueryable<T>> SearchForAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
         {
-            var query = SearchFor(predicate);
-            return includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
+            var query = await SearchForAsync(predicate);
+            return await Task.Run(() => 
+            includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty)));
         }
     }
 }
