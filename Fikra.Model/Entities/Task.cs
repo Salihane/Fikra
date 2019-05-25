@@ -15,7 +15,7 @@ namespace Fikra.Model.Entities
         public DateTime? Due { get; set; }
         public Status Status { get; set; }
         public Priority Priority { get; set; }
-        public TaskEffort Effort { get; set; }
-        public ICollection<TaskComment> Comments { get; set; }
+        public Effort Effort { get; set; }
+        public ICollection<Comment> Comments { get; set; }
     }
 }
