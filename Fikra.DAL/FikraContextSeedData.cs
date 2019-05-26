@@ -171,15 +171,21 @@ namespace Fikra.DAL
                 Value = $"This is a comment for {taskName}"
             };
 
+            var estimate = daysRangee + 3;
+            var completed = Random.Next(1, estimate);
+            var remaining = estimate - completed;
+
             var effort = new Effort
             {
                 CreatedOn = DateTime.Now.AddDays(-(daysRangee + 2)),
                 ModifiedOn = DateTime.Now.AddDays(-(daysRangee + 2)),
-                Estimated = 8,
-                Completed = 4,
-                Remaining = 4
+                Estimated = estimate,
+                Completed = completed,
+                Remaining = remaining
             };
 
+            var priority = GetRandomEnumValue<Entities.Enums.Priority>();
+            var status = GetRandomEnumValue<Entities.Enums.Status>();
             var task = new Entities.Task
             {
                 Comments = new Collection<TaskComment> { comment },
@@ -188,8 +194,8 @@ namespace Fikra.DAL
                 Due = DateTime.Now.AddDays(daysRangee + 3),
                 Effort = effort,
                 Name = taskName,
-                Priority = Model.Entities.Enums.Priority.Medium,
-                Status = Model.Entities.Enums.Status.Active
+                Priority = priority,
+                Status = status
             };
 
             return task;
@@ -205,6 +211,12 @@ namespace Fikra.DAL
         {
 	        var task = CreateTask(taskName);
 	        return _mapper.Map<Entities.Task, ProjectTask>(task);
+        }
+
+        private T GetRandomEnumValue<T>()
+        {
+	        var values = Enum.GetValues(typeof(T));
+	        return (T) values.GetValue(Random.Next(values.Length));
         }
 	}
 }

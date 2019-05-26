@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.539
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fikra.API", "Fikra.API\Fikra.API.csproj", "{8ED7EB74-1926-4430-A5E8-7CB1B424DCDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fikra.API", "Fikra.API\Fikra.API.csproj", "{8ED7EB74-1926-4430-A5E8-7CB1B424DCDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fikra.Ng", "Fikra.Ng\Fikra.Ng.csproj", "{4D1C460E-9E3D-4542-A92B-1813151997EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fikra.Ng", "Fikra.Ng\Fikra.Ng.csproj", "{4D1C460E-9E3D-4542-A92B-1813151997EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fikra.Model", "Fikra.Model\Fikra.Model.csproj", "{CC0FDE68-9946-4D8E-AA51-8A5C0311AB64}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fikra.Model", "Fikra.Model\Fikra.Model.csproj", "{CC0FDE68-9946-4D8E-AA51-8A5C0311AB64}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fikra.DAL", "Fikra.DAL\Fikra.DAL.csproj", "{8AAFB341-90E6-4BC7-AD70-6BEB283951F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fikra.DAL", "Fikra.DAL\Fikra.DAL.csproj", "{8AAFB341-90E6-4BC7-AD70-6BEB283951F4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fikra.POCS.EF.API", "POCS\EF\Fikra.POCS.EF.API\Fikra.POCS.EF.API.csproj", "{20EDD71A-0BEC-4801-831D-273DF0CFFAA3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{8AAFB341-90E6-4BC7-AD70-6BEB283951F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AAFB341-90E6-4BC7-AD70-6BEB283951F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AAFB341-90E6-4BC7-AD70-6BEB283951F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20EDD71A-0BEC-4801-831D-273DF0CFFAA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20EDD71A-0BEC-4801-831D-273DF0CFFAA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20EDD71A-0BEC-4801-831D-273DF0CFFAA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20EDD71A-0BEC-4801-831D-273DF0CFFAA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

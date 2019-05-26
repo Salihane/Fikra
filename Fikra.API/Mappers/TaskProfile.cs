@@ -11,7 +11,8 @@ namespace Fikra.API.Mappers
     {
         public TaskProfile()
         {
-            //CreateMap<Model.Entities.Task, DashboardTask>();
-        }
+			CreateMap<Model.Entities.Task, DashboardTask>();
+			CreateMap<Model.Entities.Task, ProjectTask>();
+		}
     }
 }
