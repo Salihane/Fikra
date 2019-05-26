@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Fikra.Model.Entities
 {
-    public class Comment : IEntity<Guid>
+    public class Text : IEntity<Guid>
     {
         public Guid Id { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime ModifiedOn { get; set; }
-        public string Content { get; set; }
+        public string Value { get; set; }
     }
 }

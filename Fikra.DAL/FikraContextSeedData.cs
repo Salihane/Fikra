@@ -15,14 +15,17 @@ namespace Fikra.DAL
     {
         private readonly IRepository<Entities.Task, Guid> _tasksRepo;
         private readonly IRepository<Dashboard, int> _dashboardsRepo;
+        private readonly IMapper _mapper;
 
         private static readonly Random Random = new Random(DateTime.Now.Millisecond);
 
         public FikraContextSeedData(IRepository<Entities.Task, Guid> tasksRepo,
-            IRepository<Dashboard, int> dashboardsRepo)
+            IRepository<Dashboard, int> dashboardsRepo,
+            IMapper mapper)
         {
             _tasksRepo = tasksRepo;
             _dashboardsRepo = dashboardsRepo;
+            _mapper = mapper;
         }
 
         public async ThreadingTasks.Task EnsureSeedDataAsync()
@@ -57,16 +60,16 @@ namespace Fikra.DAL
             {
 				// Home
                 var homeDashboard = CreateDashboard("Home");
-                homeDashboard.Tasks = new Collection<Entities.Task>
+                homeDashboard.Tasks = new Collection<Entities.DashboardTask>
                 {
-	                CreateTask("Painting the hall")
+	                CreateDashboardTask("Painting the hall")
 				};
 
                 var plantsProject = CreateProject("Plants");
-                var thabghaTask = CreateTask("Thabgha");
-                var thazathTask = CreateTask("Thazath");
-                var lewayaTask = CreateTask("Lewaya");
-                plantsProject.Tasks = new Collection<Entities.Task>
+                var thabghaTask = CreateProjectTask("Thabgha");
+                var thazathTask = CreateProjectTask("Thazath");
+                var lewayaTask = CreateProjectTask("Lewaya");
+                plantsProject.Tasks = new Collection<Entities.ProjectTask>
                 {
 	                thabghaTask,
 	                thazathTask,
@@ -74,8 +77,8 @@ namespace Fikra.DAL
                 };
 
                 var toolsProject = CreateProject("Tools");
-                var zakatCalculatorTask = CreateTask("Zakat Calculator");
-                toolsProject.Tasks = new Collection<Entities.Task>
+                var zakatCalculatorTask = CreateProjectTask("Zakat Calculator");
+                toolsProject.Tasks = new Collection<Entities.ProjectTask>
                 {
 	                zakatCalculatorTask
                 };
@@ -89,25 +92,25 @@ namespace Fikra.DAL
 
 				// Work
                 var workDashboard = CreateDashboard("Work");
-                workDashboard.Tasks = new Collection<Entities.Task>
+                workDashboard.Tasks = new Collection<Entities.DashboardTask>
                 {
-	                CreateTask("Learning Docker"),
-	                CreateTask("Read Clean Architecture"),
-	                CreateTask("Building the Fikra app")
+	                CreateDashboardTask("Learning Docker"),
+	                CreateDashboardTask("Read Clean Architecture"),
+					CreateDashboardTask("Building the Fikra app")
                 };
 
                 var agiProject = CreateProject("AGI");
-                agiProject.Tasks = new Collection<Entities.Task>
+                agiProject.Tasks = new Collection<Entities.ProjectTask>
                 {
-	                CreateTask("KT")
+	                CreateProjectTask("KT")
                 };
                 var philAtHomeProject = CreateProject("Phil At Home");
-                philAtHomeProject.Tasks = new Collection<Entities.Task>
+                philAtHomeProject.Tasks = new Collection<Entities.ProjectTask>
                 {
-					CreateTask("Implementing security phase 1"),
-					CreateTask("Implementing security phase 2"),
-					CreateTask("Organize a KT session"),
-					CreateTask("Implementing CI/CD")
+					CreateProjectTask("Implementing security phase 1"),
+					CreateProjectTask("Implementing security phase 2"),
+					CreateProjectTask("Organize a KT session"),
+					CreateProjectTask("Implementing CI/CD")
                 };
                 workDashboard.Projects = new Collection<Project>
                 {
@@ -119,9 +122,9 @@ namespace Fikra.DAL
 
 				// Hobbies
                 var hobbiesDashboard = CreateDashboard("Hobbies");
-                hobbiesDashboard.Tasks = new Collection<Entities.Task>
+                hobbiesDashboard.Tasks = new Collection<Entities.DashboardTask>
                 {
-	                CreateTask("Kayak in ardennen")
+	                CreateDashboardTask("Kayak in ardennen")
                 };
                 _dashboardsRepo.Add(hobbiesDashboard);
             }
@@ -161,11 +164,11 @@ namespace Fikra.DAL
         {
             var daysRangee = Random.Next(1, 5);
 
-            var comment = new Comment
+            var comment = new TaskComment
             {
                 CreatedOn = DateTime.Now.AddDays(-(daysRangee + 1)),
                 ModifiedOn = DateTime.Now.AddDays(-(daysRangee + 1)),
-                Content = $"This is a comment for {taskName}"
+                Value = $"This is a comment for {taskName}"
             };
 
             var effort = new Effort
@@ -179,7 +182,7 @@ namespace Fikra.DAL
 
             var task = new Entities.Task
             {
-                Comments = new Collection<Comment> { comment },
+                Comments = new Collection<TaskComment> { comment },
                 CreatedOn = DateTime.Now.AddDays(-(daysRangee + 3)),
                 ModifiedOn = DateTime.Now.AddDays(-(daysRangee + 3)),
                 Due = DateTime.Now.AddDays(daysRangee + 3),
@@ -190,6 +193,18 @@ namespace Fikra.DAL
             };
 
             return task;
+		}
+
+        private DashboardTask CreateDashboardTask(string taskName)
+        {
+	        var task = CreateTask(taskName);
+	        return _mapper.Map<Entities.Task, DashboardTask>(task);
+		}
+
+        private ProjectTask CreateProjectTask(string taskName)
+        {
+	        var task = CreateTask(taskName);
+	        return _mapper.Map<Entities.Task, ProjectTask>(task);
         }
-    }
+	}
 }

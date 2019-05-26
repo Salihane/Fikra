@@ -19,26 +19,6 @@ namespace Fikra.DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Fikra.Model.Entities.Comment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Content");
-
-                    b.Property<DateTime>("CreatedOn");
-
-                    b.Property<DateTime>("ModifiedOn");
-
-                    b.Property<Guid?>("TaskId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TaskId");
-
-                    b.ToTable("Comments");
-                });
-
             modelBuilder.Entity("Fikra.Model.Entities.Dashboard", b =>
                 {
                     b.Property<int>("Id")
@@ -104,7 +84,8 @@ namespace Fikra.DAL.Migrations
 
                     b.Property<DateTime>("CreatedOn");
 
-                    b.Property<int?>("DashboardId");
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
 
                     b.Property<DateTime?>("Due");
 
@@ -116,26 +97,61 @@ namespace Fikra.DAL.Migrations
 
                     b.Property<int>("Priority");
 
-                    b.Property<int?>("ProjectId");
-
                     b.Property<int>("Status");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EffortId");
+
+                    b.ToTable("Task");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Task");
+                });
+
+            modelBuilder.Entity("Fikra.Model.Entities.TaskComment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<DateTime>("ModifiedOn");
+
+                    b.Property<Guid>("TaskId");
+
+                    b.Property<string>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TaskId");
+
+                    b.ToTable("TaskComments");
+                });
+
+            modelBuilder.Entity("Fikra.Model.Entities.DashboardTask", b =>
+                {
+                    b.HasBaseType("Fikra.Model.Entities.Task");
+
+                    b.Property<int>("DashboardId");
+
                     b.HasIndex("DashboardId");
 
-                    b.HasIndex("EffortId");
+                    b.ToTable("DashboardTask");
+
+                    b.HasDiscriminator().HasValue("DashboardTask");
+                });
+
+            modelBuilder.Entity("Fikra.Model.Entities.ProjectTask", b =>
+                {
+                    b.HasBaseType("Fikra.Model.Entities.Task");
+
+                    b.Property<int>("ProjectId");
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Tasks");
-                });
+                    b.ToTable("ProjectTask");
 
-            modelBuilder.Entity("Fikra.Model.Entities.Comment", b =>
-                {
-                    b.HasOne("Fikra.Model.Entities.Task")
-                        .WithMany("Comments")
-                        .HasForeignKey("TaskId");
+                    b.HasDiscriminator().HasValue("ProjectTask");
                 });
 
             modelBuilder.Entity("Fikra.Model.Entities.Project", b =>
@@ -147,17 +163,33 @@ namespace Fikra.DAL.Migrations
 
             modelBuilder.Entity("Fikra.Model.Entities.Task", b =>
                 {
-                    b.HasOne("Fikra.Model.Entities.Dashboard")
-                        .WithMany("Tasks")
-                        .HasForeignKey("DashboardId");
-
                     b.HasOne("Fikra.Model.Entities.Effort", "Effort")
                         .WithMany()
                         .HasForeignKey("EffortId");
+                });
 
-                    b.HasOne("Fikra.Model.Entities.Project")
+            modelBuilder.Entity("Fikra.Model.Entities.TaskComment", b =>
+                {
+                    b.HasOne("Fikra.Model.Entities.Task", "Task")
+                        .WithMany("Comments")
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Fikra.Model.Entities.DashboardTask", b =>
+                {
+                    b.HasOne("Fikra.Model.Entities.Dashboard", "Dashboard")
                         .WithMany("Tasks")
-                        .HasForeignKey("ProjectId");
+                        .HasForeignKey("DashboardId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Fikra.Model.Entities.ProjectTask", b =>
+                {
+                    b.HasOne("Fikra.Model.Entities.Project", "Project")
+                        .WithMany("Tasks")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

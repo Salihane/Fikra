@@ -11,6 +11,6 @@ namespace Fikra.Model.Entities
 		public DateTime CreatedOn { get; set; }
 		public DateTime ModifiedOn { get; set; }
 		public string Name { get; set; }
-		public virtual ICollection<Task> Tasks { get; set; }
+		public virtual ICollection<ProjectTask> Tasks { get; set; }
 	}
 }

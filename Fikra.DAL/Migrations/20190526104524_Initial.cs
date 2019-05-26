@@ -62,7 +62,7 @@ namespace Fikra.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tasks",
+                name: "Task",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -73,57 +73,53 @@ namespace Fikra.DAL.Migrations
                     Status = table.Column<int>(nullable: false),
                     Priority = table.Column<int>(nullable: false),
                     EffortId = table.Column<Guid>(nullable: true),
+                    Discriminator = table.Column<string>(nullable: false),
                     DashboardId = table.Column<int>(nullable: true),
                     ProjectId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tasks", x => x.Id);
+                    table.PrimaryKey("PK_Task", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tasks_Dashboards_DashboardId",
+                        name: "FK_Task_Dashboards_DashboardId",
                         column: x => x.DashboardId,
                         principalTable: "Dashboards",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Tasks_Efforts_EffortId",
-                        column: x => x.EffortId,
-                        principalTable: "Efforts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Tasks_Projects_ProjectId",
+                        name: "FK_Task_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Task_Efforts_EffortId",
+                        column: x => x.EffortId,
+                        principalTable: "Efforts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Comments",
+                name: "TaskComments",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     ModifiedOn = table.Column<DateTime>(nullable: false),
-                    Content = table.Column<string>(nullable: true),
-                    TaskId = table.Column<Guid>(nullable: true)
+                    Value = table.Column<string>(nullable: true),
+                    TaskId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.PrimaryKey("PK_TaskComments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comments_Tasks_TaskId",
+                        name: "FK_TaskComments_Task_TaskId",
                         column: x => x.TaskId,
-                        principalTable: "Tasks",
+                        principalTable: "Task",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Comments_TaskId",
-                table: "Comments",
-                column: "TaskId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Projects_DashboardId",
@@ -131,34 +127,39 @@ namespace Fikra.DAL.Migrations
                 column: "DashboardId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tasks_DashboardId",
-                table: "Tasks",
+                name: "IX_Task_DashboardId",
+                table: "Task",
                 column: "DashboardId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tasks_EffortId",
-                table: "Tasks",
+                name: "IX_Task_ProjectId",
+                table: "Task",
+                column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Task_EffortId",
+                table: "Task",
                 column: "EffortId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tasks_ProjectId",
-                table: "Tasks",
-                column: "ProjectId");
+                name: "IX_TaskComments_TaskId",
+                table: "TaskComments",
+                column: "TaskId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Comments");
+                name: "TaskComments");
 
             migrationBuilder.DropTable(
-                name: "Tasks");
-
-            migrationBuilder.DropTable(
-                name: "Efforts");
+                name: "Task");
 
             migrationBuilder.DropTable(
                 name: "Projects");
+
+            migrationBuilder.DropTable(
+                name: "Efforts");
 
             migrationBuilder.DropTable(
                 name: "Dashboards");
