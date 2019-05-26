@@ -27,70 +27,70 @@ namespace Fikra.API.Controllers
             return _dashboardRepo.GetAll();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> PostDashboard([FromBody] Dashboard dashboard)
-        {
-            _dashboardRepo.Add(dashboard);
-            await _dashboardRepo.SaveChangesAsync();
+        //[HttpPost]
+        //public async Task<IActionResult> PostDashboard([FromBody] Dashboard dashboard)
+        //{
+        //    _dashboardRepo.Add(dashboard);
+        //    await _dashboardRepo.SaveChangesAsync();
 
-            return Ok(dashboard);
-        }
+        //    return Ok(dashboard);
+        //}
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutDashboard(int id, [FromBody] Dashboard dashboard)
-        {
-            if (id != dashboard.Id)
-            {
-                return BadRequest("Query id and entity id mismatch");
-            }
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutDashboard(int id, [FromBody] Dashboard dashboard)
+        //{
+        //    if (id != dashboard.Id)
+        //    {
+        //        return BadRequest("Query id and entity id mismatch");
+        //    }
 
-            _dashboardRepo.Update(dashboard);
-            await _dashboardRepo.SaveChangesAsync();
+        //    _dashboardRepo.Update(dashboard);
+        //    await _dashboardRepo.SaveChangesAsync();
 
-            return Ok(dashboard);
-        }
+        //    return Ok(dashboard);
+        //}
 
-        [HttpGet("{id}/tasks")]
-        public async Task<IActionResult> GetDashboardTask(int id)
-        {
-            var dashboard = await _dashboardRepo.SearchForAsync(x => x.Id.Equals(id), y => y.Tasks);
+        //[HttpGet("{id}/tasks")]
+        //public async Task<IActionResult> GetDashboardTask(int id)
+        //{
+        //    var dashboard = await _dashboardRepo.SearchForAsync(x => x.Id.Equals(id), y => y.Tasks);
 
-            if (dashboard == null)
-            {
-                return BadRequest("The requested dashboard couldn't be found");
-            }
+        //    if (dashboard == null)
+        //    {
+        //        return BadRequest("The requested dashboard couldn't be found");
+        //    }
 
-            var tasks = dashboard.Single().Tasks;
+        //    var tasks = dashboard.Single().Tasks;
 
-            return Ok(tasks);
-        }
+        //    return Ok(tasks);
+        //}
 
-        [HttpPost("{id}/tasks")]
-        public async Task<IActionResult> PostDashboardTask(int id, [FromBody]DashboardTask task)
-        {
-            var dashboardSearch = await _dashboardRepo
-                .SearchForAsync(x => x.Id.Equals(id), y => y.Tasks);
+        //[HttpPost("{id}/tasks")]
+        //public async Task<IActionResult> PostDashboardTask(int id, [FromBody]Model.Entities.Task task)
+        //{
+        //    var dashboardSearch = await _dashboardRepo
+        //        .SearchForAsync(x => x.Id.Equals(id), y => y.Tasks);
 
-            if (dashboardSearch == null)
-            {
-                return BadRequest("The requested dashboard couldn't be found");
-            }
+        //    if (dashboardSearch == null)
+        //    {
+        //        return BadRequest("The requested dashboard couldn't be found");
+        //    }
 
-            var dashboard = dashboardSearch.Single();
+        //    var dashboard = dashboardSearch.Single();
 
-            var taskExists = dashboard.Tasks
-                .FirstOrDefault(x => x.Name.Equals(task.Name, StringComparison.CurrentCultureIgnoreCase)) != null;
+        //    var taskExists = dashboard.Tasks
+        //        .FirstOrDefault(x => x.Name.Equals(task.Name, StringComparison.CurrentCultureIgnoreCase)) != null;
 
-            if (taskExists)
-            {
-                return BadRequest("A task with the same name exists already!");
-            }
+        //    if (taskExists)
+        //    {
+        //        return BadRequest("A task with the same name exists already!");
+        //    }
             
-            dashboard.Tasks.Add(task);
-            await _dashboardRepo.SaveChangesAsync();
+        //    dashboard.Tasks.Add(task);
+        //    await _dashboardRepo.SaveChangesAsync();
 
-            return Ok(task);
-        }
+        //    return Ok(task);
+        //}
 
     }
 }

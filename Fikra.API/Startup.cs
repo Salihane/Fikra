@@ -36,8 +36,17 @@ namespace Fikra.API
                 .AllowAnyMethod()
                 .AllowAnyHeader();
             }));
+			
+            services.AddDbContext<FikraContext>(options =>
+            {
+	            var configuration = new ConfigurationBuilder()
+		            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+		            .AddJsonFile("appsettings.json")
+		            .Build();
 
-            services.AddDbContext<FikraContext>(options => options.UseInMemoryDatabase("fikra"));
+				var connectionString = configuration.GetConnectionString("DefaultConnection");
+	            options.UseSqlServer(connectionString);
+            });
             services.AddScoped(typeof(IRepository<,>), typeof(FikraRepository<,>));
             services.AddTransient<FikraContextSeedData>();
             services.AddAutoMapper();

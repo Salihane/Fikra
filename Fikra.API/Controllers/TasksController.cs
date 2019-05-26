@@ -26,27 +26,27 @@ namespace Fikra.API.Controllers
             return _tasksRepo.GetAll();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody]Entities.Task task)
-        {
-            _tasksRepo.Add(task);
-            await _tasksRepo.SaveChangesAsync();
+        //[HttpPost]
+        //public async Task<IActionResult> Post([FromBody]Entities.Task task)
+        //{
+        //    _tasksRepo.Add(task);
+        //    await _tasksRepo.SaveChangesAsync();
 
-            return Ok(task);
-        }
+        //    return Ok(task);
+        //}
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(Guid id, [FromBody]Entities.Task taskData)
-        {
-            if (taskData.Id != id)
-            {
-                return BadRequest("Query id and entity id mismatch");
-            }
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> Put(Guid id, [FromBody]Entities.Task taskData)
+        //{
+        //    if (taskData.Id != id)
+        //    {
+        //        return BadRequest("Query id and entity id mismatch");
+        //    }
 
-            _tasksRepo.Update(taskData);
-            await _tasksRepo.SaveChangesAsync();
+        //    _tasksRepo.Update(taskData);
+        //    await _tasksRepo.SaveChangesAsync();
 
-            return Ok(taskData);
-        }
+        //    return Ok(taskData);
+        //}
     }
 }
