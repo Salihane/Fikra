@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fikra.DAL", "Fikra.DAL\Fikr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fikra.POCS.EF.API", "POCS\EF\Fikra.POCS.EF.API\Fikra.POCS.EF.API.csproj", "{20EDD71A-0BEC-4801-831D-273DF0CFFAA3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fikra.Common", "Fikra.Common\Fikra.Common.csproj", "{29BB2D2C-63D7-499C-8B06-05B613AE5D79}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{20EDD71A-0BEC-4801-831D-273DF0CFFAA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20EDD71A-0BEC-4801-831D-273DF0CFFAA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20EDD71A-0BEC-4801-831D-273DF0CFFAA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29BB2D2C-63D7-499C-8B06-05B613AE5D79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29BB2D2C-63D7-499C-8B06-05B613AE5D79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29BB2D2C-63D7-499C-8B06-05B613AE5D79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29BB2D2C-63D7-499C-8B06-05B613AE5D79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
