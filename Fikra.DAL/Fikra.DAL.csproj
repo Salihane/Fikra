@@ -13,9 +13,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.0.15" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Fikra.Common\Fikra.Common.csproj" />
     <ProjectReference Include="..\Fikra.Model\Fikra.Model.csproj" />
   </ItemGroup>
 

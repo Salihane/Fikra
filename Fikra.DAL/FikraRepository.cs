@@ -8,66 +8,113 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Fikra.Common.Extensions;
+using Fikra.Common.Helpers;
+using System.Linq.Dynamic.Core;
 
 namespace Fikra.DAL
 {
-    public class FikraRepository<T, K> : IRepository<T, K> where T : class, IEntity<K> where K : IEquatable<K>
-    {
-        private readonly FikraContext _context;
-        private DbSet<T> _dbSet;
+	public class FikraRepository<T, K> : IRepository<T, K> where T : class, IEntity<K> where K : IEquatable<K>
+	{
+		private readonly FikraContext _context;
+		private DbSet<T> _dbSet;
 
-        public FikraRepository(FikraContext context)
-        {
-            _context = context;
-            _dbSet = context.Set<T>();
-        }
-        public void Add(T entity)
-        {
-            _dbSet.Add(entity);
-        }
+		public FikraRepository(FikraContext context)
+		{
+			_context = context;
+			_dbSet = context.Set<T>();
+		}
+		public void Add(T entity)
+		{
+			_dbSet.Add(entity);
+		}
 
-        public IQueryable<T> GetAll()
-        {
-            return _dbSet;
-        }
+		public IQueryable<T> GetAll()
+		{
+			return _dbSet;
+		}
 
-        public async Task<long> CountAsync()
-        {
-            return await _dbSet.LongCountAsync();
-        }
+		public async Task<PagedList<T>> SearchForAsync(Expression<Func<T, bool>> predicate,
+			IResourceParameters<T, K> resourceParameters)
+		{
+			var collection = await SearchForAsync(predicate);
 
-        public async Task<T> GetByIdAsync(K id)
-        {
-            return await _dbSet.FindAsync(id);
-        }
+			var applyFilter = resourceParameters?.ResourceFilter != null;
+			if (applyFilter)
+			{
+				collection = collection
+					.Where(resourceParameters.ResourceFilter.Expression);
+			}
 
-        public void Remove(T entity)
-        {
-            _dbSet.Remove(entity);
-        }
+			var hasSearchQuery = !string.IsNullOrWhiteSpace(resourceParameters?.SearchQuery);
+			if (hasSearchQuery)
+			{
+				collection = collection.SearchFor(resourceParameters.SearchQuery);
+			}
 
-        public async Task<bool> SaveChangesAsync()
-        {
-            return (await _context.SaveChangesAsync()) > 0;
-        }
+			var pageNumber = resourceParameters?.PageNumber ?? 1;
+			var pageSize = resourceParameters?.PageSize ?? collection.Count();
 
-        public async Task<IQueryable<T>> SearchForAsync(Expression<Func<T, bool>> predicate)
-        {
-            return await Task.Run(() => _dbSet.Where(predicate));
-        }
+			return PagedList<T>.Create(collection, pageNumber, pageSize);
+		}
 
-        public void Update(T entity)
-        {
-            _context.Entry(entity).State = EntityState.Modified;
-        }
+		public async Task<long> CountAsync()
+		{
+			return await _dbSet.LongCountAsync();
+		}
 
-        // Solution for including childs found here: https://gist.github.com/oneillci/3205384
-        // To include subchilds (not implemented yet) check here: https://github.com/digipolisantwerp/dataaccess_aspnetcore
-        public async Task<IQueryable<T>> SearchForAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
-        {
-            var query = await SearchForAsync(predicate);
-            return await Task.Run(() => 
-            includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty)));
-        }
-    }
+		public async Task<Dictionary<string, int>> CountChildsAsync(T entity, params string[] childNames)
+		{
+			var childsCount = new Dictionary<string, int>();
+			foreach (var childName in childNames)
+			{
+				 var count = await CountChildAsync(entity, childName);
+				 childsCount.Add(childName, count);
+			}
+
+			return childsCount;
+		}
+
+		public async Task<int> CountChildAsync(T entity, string childName)
+		{
+			return await Task.Run(() => _context.Entry(entity)
+				.Collection(childName)
+				.Query()
+				.Count());
+		}
+
+		public async Task<T> GetByIdAsync(K id)
+		{
+			return await _dbSet.FindAsync(id);
+		}
+
+		public void Remove(T entity)
+		{
+			_dbSet.Remove(entity);
+		}
+
+		public async Task<bool> SaveChangesAsync()
+		{
+			return (await _context.SaveChangesAsync()) > 0;
+		}
+
+		public async Task<IQueryable<T>> SearchForAsync(Expression<Func<T, bool>> predicate)
+		{
+			return await Task.Run(() => _dbSet.Where(predicate));
+		}
+
+		public void Update(T entity)
+		{
+			_context.Entry(entity).State = EntityState.Modified;
+		}
+
+		// Solution for including childs found here: https://gist.github.com/oneillci/3205384
+		// To include subchilds (not implemented yet) check here: https://github.com/digipolisantwerp/dataaccess_aspnetcore
+		public async Task<IQueryable<T>> SearchForAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+		{
+			var query = await SearchForAsync(predicate);
+			return await Task.Run(() =>
+			includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty)));
+		}
+	}
 }
