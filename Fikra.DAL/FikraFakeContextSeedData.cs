@@ -1,22 +1,23 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Fikra.DAL.Interfaces;
 using Fikra.Model.Entities;
-using System;
-using System.Threading.Tasks;
-using Entities = Fikra.Model.Entities;
 using ThreadingTasks = System.Threading.Tasks;
 
 namespace Fikra.DAL
 {
-	public class FikraContextSeedData
-	{
-		private readonly IRepository<Entities.Task, Guid> _tasksRepo;
-		private readonly IRepository<Dashboard, int> _dashboardsRepo;
+    public class FikraFakeContextSeedData
+    {
+		private readonly IFakeRepository<Model.Entities.Task, Guid> _tasksRepo;
+		private readonly IFakeRepository<Dashboard, int> _dashboardsRepo;
 		private readonly IDummyDataManager _dummyDataManager;
 
-		public FikraContextSeedData(
-			IRepository<Entities.Task, Guid> tasksRepo,
-			IRepository<Dashboard, int> dashboardsRepo,
+		public FikraFakeContextSeedData(
+			IFakeRepository<Model.Entities.Task, Guid> tasksRepo,
+			IFakeRepository<Dashboard, int> dashboardsRepo,
 			IDummyDataManager dummyDataManager)
 		{
 			_tasksRepo = tasksRepo;

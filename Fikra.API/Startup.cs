@@ -7,6 +7,7 @@ using AutoMapper;
 using Fikra.API.Helpers;
 using Fikra.API.Helpers.DashboardTask;
 using Fikra.API.Mappers;
+using Fikra.API.Mappers.Interfaces;
 using Fikra.API.Models;
 using Fikra.Common.Constants;
 using Fikra.Common.Extensions;
@@ -48,6 +49,8 @@ namespace Fikra.API
                 .AllowAnyHeader();
             }));
 
+            services.AddDbContext<FikraFakeContext>(options => { options.UseInMemoryDatabase("FikraDb"); });
+
 			services.AddDbContext<FikraContext>(options =>
             {
 	            var configuration = new ConfigurationBuilder()
@@ -58,13 +61,18 @@ namespace Fikra.API
 				var connectionString = configuration.GetConnectionString("DefaultConnection");
 	            options.UseSqlServer(connectionString);
             });
+
             services.AddScoped(typeof(IRepository<,>), typeof(FikraRepository<,>));
+            services.AddScoped(typeof(IFakeRepository<,>), typeof(FikraFakeRepository<,>));
             services.AddTransient<FikraContextSeedData>();
+            services.AddTransient<FikraFakeContextSeedData>();
             services.AddTransient<IResourceUri<DashboardTask, Guid>, DashboardTaskResourceUri>();
             services.AddTransient<IResourceParameters<DashboardTask, Guid>, DashboardTaskResourceParameters>();
-            services.AddTransient<ILinkDtoFactory, LinkDtoFactory>();
+            services.AddSingleton<IFikraMapper<DashboardTask, DashboardTaskDto>, DashboardTaskMapper>();
+            services.AddTransient<ILinkDtoFactoryOld, LinkDtoFactoryOld>();
+            services.AddSingleton<IDummyDataManager, DummyDataManager>();
 
-            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+			services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 			services.AddScoped<IUrlHelper>(factory =>
 			{
 				var actionContext = factory.GetService<IActionContextAccessor>().ActionContext;
@@ -85,7 +93,10 @@ namespace Fikra.API
 		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, FikraContextSeedData dataSeeder)
+        public void Configure(IApplicationBuilder app, 
+	        IHostingEnvironment env, 
+	        FikraContextSeedData dataSeeder,
+	        FikraFakeContextSeedData fakeDataSeeder)
         {
             if (env.IsDevelopment())
             {
@@ -101,6 +112,7 @@ namespace Fikra.API
             app.UseMvc();
 
             dataSeeder.EnsureSeedDataAsync().Wait();
+            fakeDataSeeder.EnsureSeedDataAsync().Wait();
         }
     }
 }

@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Fikra.API.Helpers
 {
-    public class LinkDtoFactory : ILinkDtoFactory
+    public class LinkDtoFactoryOld : ILinkDtoFactoryOld
     {
 	    public LinkDto CreateLink(IUrlHelper urlHelper, string linkName, ExpandoObject linkParams, string actionMethod)
 	    {

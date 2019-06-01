@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Fikra.API.Helpers
 {
-    public interface ILinkDtoFactory
+    public interface ILinkDtoFactory<T> where T : class
     {
-	    LinkDto CreateLink(IUrlHelper urlHelper, string linkName, ExpandoObject linkParams, string actionMethod);
+	    LinkDto CreateGetEntityLink(ResourceUriType resourceUriType);
+	    IEnumerable<LinkDto> CreateNavigationLinksForEntity(bool hasNext, bool hasPrevious, params object[] linkValues);
+
     }
 }

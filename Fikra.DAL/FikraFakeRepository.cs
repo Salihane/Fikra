@@ -12,12 +12,12 @@ using System.Linq.Dynamic.Core;
 
 namespace Fikra.DAL
 {
-	public class FikraRepository<T, K> : IRepository<T, K> where T : class, IEntity<K> where K : IEquatable<K>
+    public class FikraFakeRepository<T, K> : IFakeRepository<T, K> where T : class, IEntity<K> where K : IEquatable<K>
 	{
-		private readonly FikraContext _context;
+		private readonly FikraFakeContext _context;
 		private DbSet<T> _dbSet;
 
-		public FikraRepository(FikraContext context)
+		public FikraFakeRepository(FikraFakeContext context)
 		{
 			_context = context;
 			_dbSet = context.Set<T>();
@@ -66,8 +66,8 @@ namespace Fikra.DAL
 			var childsCount = new Dictionary<string, int>();
 			foreach (var childName in childNames)
 			{
-				 var count = await CountChildAsync(entity, childName);
-				 childsCount.Add(childName, count);
+				var count = await CountChildAsync(entity, childName);
+				childsCount.Add(childName, count);
 			}
 
 			return childsCount;

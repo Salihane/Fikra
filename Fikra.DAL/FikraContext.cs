@@ -14,6 +14,8 @@ namespace Fikra.DAL
         public DbSet<Model.Entities.TaskComment> TaskComments { get; set; }
 
         public FikraContext(DbContextOptions<FikraContext> options)
-            : base(options) { }
+	        : base(options)
+        {
+        }
     }
 }
