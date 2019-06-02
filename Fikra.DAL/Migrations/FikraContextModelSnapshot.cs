@@ -179,7 +179,7 @@ namespace Fikra.DAL.Migrations
             modelBuilder.Entity("Fikra.Model.Entities.DashboardTask", b =>
                 {
                     b.HasOne("Fikra.Model.Entities.Dashboard", "Dashboard")
-                        .WithMany("Tasks")
+                        .WithMany("Task")
                         .HasForeignKey("DashboardId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -187,7 +187,7 @@ namespace Fikra.DAL.Migrations
             modelBuilder.Entity("Fikra.Model.Entities.ProjectTask", b =>
                 {
                     b.HasOne("Fikra.Model.Entities.Project", "Project")
-                        .WithMany("Tasks")
+                        .WithMany("Task")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

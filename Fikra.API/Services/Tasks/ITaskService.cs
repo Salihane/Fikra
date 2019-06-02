@@ -9,11 +9,11 @@ using Fikra.Model.Entities;
 
 namespace Fikra.API.Services.Tasks
 {
-    public interface ITaskService : IDataService
+    public interface ITaskService
     {
-	    ResourceResult GetTasksByDashboardId(
+	    Task<ResourceResult> GetTasksByDashboardIdAsync(
 		    int dashboardId,
-		    DashboardTaskResourceParametersDto resourceParameters,
+		    DashboardTaskResourceParametersDto resourceParametersDto,
 		    string mediaType);
 
 

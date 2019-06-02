@@ -19,7 +19,7 @@ namespace Fikra.API.UnitTests.Controllers
 		    using (var fikraContext = DbContextMocker.GetFikraContext("Fikra Db"))
 		    {
 			    var tasksRepo = new FikraRepository<DashboardTask, Guid>(fikraContext);
-				var tasksController = new TasksController()
+				//var tasksController = new TasksController()
 		    }
 
 	    }

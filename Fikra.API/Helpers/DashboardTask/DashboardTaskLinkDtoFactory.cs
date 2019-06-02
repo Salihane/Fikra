@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Fikra.API.Helpers.DashboardTask
 {
-	public class DashboardTaskLinkDtoFactory : ILinkDtoFactory<Model.Entities.DashboardTask>
+	public class DashboardTaskLinkDtoFactory : ILinkDtoFactory<Model.Entities.DashboardTask, Guid>
 	{
 		private readonly IResourceParameters<Model.Entities.DashboardTask, Guid> _dashboardTaskParameters;
 		private readonly IResourceUri<Model.Entities.DashboardTask, Guid> _dashboardTaskUri;
@@ -44,10 +44,10 @@ namespace Fikra.API.Helpers.DashboardTask
 				_dashboardTaskParameters, resourceUriType,
 				_urlHelper, ActionNames.Tasks.GetDashboardTasks);
 
-			return new LinkDto( href, paginationPage, ActionMethods.Get);
+			return new LinkDto(href, paginationPage, ActionMethods.Get);
 		}
 
-		public IEnumerable<LinkDto> CreateNavigationLinksForEntity(bool hasNext, bool hasPrevious, params object[] linkValues)
+		public IEnumerable<LinkDto> CreateNavigationLinksForEntity(bool hasNext, bool hasPrevious, object linkValues)
 		{
 			var links = new List<LinkDto>
 			{
@@ -60,14 +60,50 @@ namespace Fikra.API.Helpers.DashboardTask
 				links.Add(CreateGetEntityLink(ResourceUriType.Previous));
 
 			var postLink = LinkDtoBuilder.CreateLink(
-				_urlHelper, 
-				LinkRelations.Task.CreateDashboardTask,  
-				ActionMethods.Get,
-				new { dashboardId = linkValues.Single()});
+				_urlHelper,
+				ActionNames.Tasks.CreateDashboardTask,
+				LinkRelations.Task.CreateTask,
+				ActionMethods.Post,
+				linkValues);
 
 			links.Add(postLink);
 
 			return links;
+		}
+
+		public IEnumerable<LinkDto> CreateCrudLinksForEntity(Guid entityId, string entityFields)
+		{
+			dynamic linkValues = new ExpandoObject();
+			linkValues.Id = entityId;
+
+			if (!string.IsNullOrEmpty(entityFields))
+				linkValues.Fields = entityFields;
+
+			var getTaskLink = LinkDtoBuilder.CreateLink(_urlHelper, ActionNames.Tasks.GetTaskById,
+LinkRelations.Task.GetTask, ActionMethods.Get, new { id = entityId.ToString() });
+
+			var deleteTaskLink = LinkDtoBuilder.CreateLink(_urlHelper, ActionNames.Tasks.DeleteTask,
+				LinkRelations.Task.DeleteTask, ActionMethods.Delete, new { id = entityId });
+
+			var putTaskLink = LinkDtoBuilder.CreateLink(_urlHelper, ActionNames.Tasks.UpdateTask,
+				LinkRelations.Task.UpdateTask, ActionMethods.Put, new { id = entityId });
+
+			var patchTaskLink = LinkDtoBuilder.CreateLink(_urlHelper, ActionNames.Tasks.PatchTask,
+				LinkRelations.Task.PathTask, ActionMethods.Patch, new { id = entityId });
+
+			linkValues = new ExpandoObject();
+			linkValues.TaskId = entityId;
+			var taskCommentsLink = LinkDtoBuilder.CreateLink(_urlHelper, ActionNames.Comments.GetDashboardTaskComments,
+				LinkRelations.Task.GetComments, ActionMethods.Get, new { taskId = entityId });
+
+			return new List<LinkDto>
+			{
+				getTaskLink,
+				deleteTaskLink,
+				putTaskLink,
+				patchTaskLink,
+				taskCommentsLink
+			};
 		}
 	}
 }

@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace Fikra.API.Helpers
 {
-    public interface ILinkDtoFactory<T> where T : class
-    {
+    public interface ILinkDtoFactory<T, K> where T : class where K : IEquatable<K>
+	{
 	    LinkDto CreateGetEntityLink(ResourceUriType resourceUriType);
-	    IEnumerable<LinkDto> CreateNavigationLinksForEntity(bool hasNext, bool hasPrevious, params object[] linkValues);
+	    IEnumerable<LinkDto> CreateNavigationLinksForEntity(bool hasNext, bool hasPrevious, object linkValues);
+	    IEnumerable<LinkDto> CreateCrudLinksForEntity(K entityId, string entityFields);
 
     }
 }

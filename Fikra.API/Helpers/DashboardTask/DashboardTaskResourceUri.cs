@@ -11,13 +11,19 @@ namespace Fikra.API.Helpers.DashboardTask
 {
 	public class DashboardTaskResourceUri : IResourceUri<Model.Entities.DashboardTask, Guid>
 	{
+		private readonly IMapper _mapper;
+
+		public DashboardTaskResourceUri(IMapper mapper)
+		{
+			_mapper = mapper;
+		}
 		public string CreateResourceUri(
 			IResourceParameters<Model.Entities.DashboardTask, Guid> resourceParams,
 			ResourceUriType uriType, 
 			IUrlHelper urlHelper, 
 			string urlName)
 		{
-			var dashboardTaskResourceParamDto = Mapper.Map<DashboardTaskResourceParametersDto>(resourceParams);
+			var dashboardTaskResourceParamDto = _mapper.Map<DashboardTaskResourceParametersDto>(resourceParams);
 
 			switch (uriType)
 			{

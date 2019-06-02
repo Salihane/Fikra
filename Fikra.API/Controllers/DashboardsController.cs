@@ -53,14 +53,14 @@ namespace Fikra.API.Controllers
         //[HttpGet("{id}/tasks")]
         //public async Task<IActionResult> GetDashboardTask(int id)
         //{
-        //    var dashboard = await _dashboardRepo.SearchForAsync(x => x.Id.Equals(id), y => y.Tasks);
+        //    var dashboard = await _dashboardRepo.SearchForAsync(x => x.Id.Equals(id), y => y.Task);
 
         //    if (dashboard == null)
         //    {
         //        return BadRequest("The requested dashboard couldn't be found");
         //    }
 
-        //    var tasks = dashboard.Single().Tasks;
+        //    var tasks = dashboard.Single().Task;
 
         //    return Ok(tasks);
         //}
@@ -69,7 +69,7 @@ namespace Fikra.API.Controllers
         //public async Task<IActionResult> PostDashboardTask(int id, [FromBody]Model.Entities.Task task)
         //{
         //    var dashboardSearch = await _dashboardRepo
-        //        .SearchForAsync(x => x.Id.Equals(id), y => y.Tasks);
+        //        .SearchForAsync(x => x.Id.Equals(id), y => y.Task);
 
         //    if (dashboardSearch == null)
         //    {
@@ -78,7 +78,7 @@ namespace Fikra.API.Controllers
 
         //    var dashboard = dashboardSearch.Single();
 
-        //    var taskExists = dashboard.Tasks
+        //    var taskExists = dashboard.Task
         //        .FirstOrDefault(x => x.Name.Equals(task.Name, StringComparison.CurrentCultureIgnoreCase)) != null;
 
         //    if (taskExists)
@@ -86,7 +86,7 @@ namespace Fikra.API.Controllers
         //        return BadRequest("A task with the same name exists already!");
         //    }
             
-        //    dashboard.Tasks.Add(task);
+        //    dashboard.Task.Add(task);
         //    await _dashboardRepo.SaveChangesAsync();
 
         //    return Ok(task);

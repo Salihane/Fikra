@@ -9,6 +9,7 @@ using Fikra.API.Helpers.DashboardTask;
 using Fikra.API.Mappers;
 using Fikra.API.Mappers.Interfaces;
 using Fikra.API.Models;
+using Fikra.API.Services.Tasks;
 using Fikra.Common.Constants;
 using Fikra.Common.Extensions;
 using Fikra.Common.Helpers;
@@ -68,12 +69,13 @@ namespace Fikra.API
             services.AddTransient<FikraFakeContextSeedData>();
             services.AddTransient<IResourceUri<DashboardTask, Guid>, DashboardTaskResourceUri>();
             services.AddTransient<IResourceParameters<DashboardTask, Guid>, DashboardTaskResourceParameters>();
-            services.AddSingleton<IFikraMapper<DashboardTask, DashboardTaskDto>, DashboardTaskMapper>();
-            services.AddTransient<ILinkDtoFactoryOld, LinkDtoFactoryOld>();
+            services.AddTransient<ILinkDtoFactory<DashboardTask, Guid>, DashboardTaskLinkDtoFactory>();
+			services.AddTransient<ITaskService, TaskService>();
+            services.AddTransient<IFikraMapper<DashboardTask, DashboardTaskDto>, DashboardTaskMapper>();
             services.AddSingleton<IDummyDataManager, DummyDataManager>();
 
 			services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-			services.AddScoped<IUrlHelper>(factory =>
+			services.AddTransient<IUrlHelper>(factory =>
 			{
 				var actionContext = factory.GetService<IActionContextAccessor>().ActionContext;
 				return new UrlHelper(actionContext);

@@ -11,24 +11,9 @@ namespace Fikra.API.Helpers
 {
     public static class LinkDtoBuilder
     {
-		public static LinkDto CreateLink(IUrlHelper urlHelper, string linkName, string actionMethod, params object[] linkParams)
+		public static LinkDto CreateLink(IUrlHelper urlHelper, string routeName, string linkRelation, string actionMethod, object linkParams)
 		{
-			var linkRelation = GetLinkRelation(actionMethod);
-			return new LinkDto(urlHelper.Link(linkName, linkParams), linkRelation, actionMethod);
-		}
-
-		private static string GetLinkRelation(string actionMethod)
-		{
-			switch (actionMethod)
-			{
-				case ActionMethods.Get: return LinkRelations.Self;
-				case ActionMethods.Post: return LinkRelations.Create;
-				case ActionMethods.Delete: return LinkRelations.Delete;
-				case ActionMethods.Put: return LinkRelations.Update;
-				case ActionMethods.Patch: return LinkRelations.Patch;
-			}
-
-			return string.Empty;
+			return new LinkDto(urlHelper.Link(routeName, linkParams), linkRelation, actionMethod);
 		}
 	}
 }

@@ -17,7 +17,12 @@ namespace Fikra.Common.Constants
 
 		public static class Task
 		{
-			public const string CreateDashboardTask = "Create Dashboard Task";
+			public const string GetTask = "Get Task";
+			public const string CreateTask = "Create Task";
+			public const string UpdateTask = "Update Task";
+			public const string PathTask = "Patch Task";
+			public const string DeleteTask = "Delete Task";
+			public const string GetComments = "Load Comments";
 		}
 	}
 }

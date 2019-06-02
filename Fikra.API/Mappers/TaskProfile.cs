@@ -38,12 +38,14 @@ namespace Fikra.API.Mappers
 					if (string.IsNullOrEmpty(src.Filter)) return null;
 
 					var nameToFilter = src.Filter.Trim();
-					var nameToFilterMaxLength = configuration[ConfigKeys.Pagination.DashboardTaskFilterNameMaxLength].TryParseToInt();
+					var nameToFilterMaxLength = configuration[ConfigKeys.Pagination.DashboardTaskFilterNameMaxLength]
+						.TryParseToInt();
 
 					if (nameToFilter.Length > nameToFilterMaxLength)
 						nameToFilter = nameToFilter.Substring(0, nameToFilterMaxLength);
 
-					Func<DashboardTask, bool> contains = x => x.Name.Contains(nameToFilter, StringComparison.CurrentCultureIgnoreCase);
+					Func<DashboardTask, bool> contains = x =>
+						x.Name.Contains(nameToFilter, StringComparison.CurrentCultureIgnoreCase);
 					Expression<Func<DashboardTask, bool>> predicate = x => contains(x);
 
 
@@ -54,9 +56,10 @@ namespace Fikra.API.Mappers
 						Expression = predicate
 					};
 				})).ReverseMap()
-				.ForMember(dest => dest.Filter, opt => opt.MapFrom(src => src.ResourceFilter.Value))
-				.ForMember(dest => dest.Fields, opt => opt.MapFrom((src, dest) =>
-					src.Fields == null ? null : string.Join(",", src.Fields)));
+					.ForMember(dest => dest.Search, opt => opt.MapFrom((src, dest) => src.SearchQuery))
+					.ForMember(dest => dest.Filter, opt => opt.MapFrom((src, dest) => src.ResourceFilter?.Value))
+					.ForMember(dest => dest.Fields, opt => opt.MapFrom((src, dest) =>
+						src.Fields == null ? null : string.Join(",", src.Fields)));
 		}
 	}
 }

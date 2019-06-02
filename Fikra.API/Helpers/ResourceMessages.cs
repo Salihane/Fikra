@@ -8,7 +8,7 @@ namespace Fikra.API.Helpers
 {
     public static class ResourceMessages
     {
-	    public const string InvalidResourceFields = "Resource does not have the requested fields";
+	    public const string InvalidResourceFields = "Resource does not have the requested field(s)";
 	    public const string ResourceNotFound = "Resource not found";
     }
 }
