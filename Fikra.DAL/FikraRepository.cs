@@ -66,8 +66,8 @@ namespace Fikra.DAL
 			var childsCount = new Dictionary<string, int>();
 			foreach (var childName in childNames)
 			{
-				 var count = await CountChildAsync(entity, childName);
-				 childsCount.Add(childName, count);
+				var count = await CountChildAsync(entity, childName);
+				childsCount.Add(childName, count);
 			}
 
 			return childsCount;
@@ -111,8 +111,9 @@ namespace Fikra.DAL
 		public async Task<IQueryable<T>> SearchForAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
 		{
 			var query = await SearchForAsync(predicate);
-			return await Task.Run(() =>
+			return await Task.Run(() => 
 			includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty)));
+
 		}
 	}
 }

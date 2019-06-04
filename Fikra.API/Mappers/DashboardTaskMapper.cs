@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Fikra.API.Mappers.Interfaces;
 using Fikra.API.Models;
+using Fikra.API.Models.DashboardTask;
 using Fikra.DAL.Interfaces;
 using Fikra.Model.Entities;
 

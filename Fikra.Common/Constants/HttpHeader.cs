@@ -8,6 +8,7 @@ namespace Fikra.Common.Constants
 	{
 		public const string Accept = "Accept";
 		public const string Pagination = "X-Pagination";
+		public const string Error = "X-Error";
 		public const string CorsPolicy = "SiteCorsPolicy";
 	}
 }

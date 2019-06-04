@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AutoMapper.Configuration;
 using Fikra.API.Helpers.DashboardTask;
 using Fikra.API.Models;
+using Fikra.API.Models.DashboardTask;
 using Fikra.Common.Constants;
 using Fikra.Common.Extensions;
 using Fikra.Common.Helpers;
@@ -21,11 +22,9 @@ namespace Fikra.API.Mappers
 			CreateMap<Model.Entities.Task, DashboardTask>();
 			CreateMap<Model.Entities.Task, ProjectTask>();
 
-			#region DashboardTask
-			CreateMap<Model.Entities.DashboardTask, DashboardTaskDto>()
-				.ForMember(dest => dest.CommentsCount, opt => opt.MapFrom(src => src.Comments.Count))
-				.ReverseMap();
-			#endregion
+			CreateMap<DashboardTask, DashboardTaskDto>().ReverseMap();
+			CreateMap<DashboardTask, DashboardTaskDtoCreate>().ReverseMap();
+			CreateMap<DashboardTask, DashboardTaskDtoUpdate>().ReverseMap();
 
 			CreateMap<DashboardTaskResourceParametersDto, DashboardTaskResourceParameters>()
 				.ForMember(dest => dest.PageNumber, opt => opt.Condition(src => src.PageNumber != 0))

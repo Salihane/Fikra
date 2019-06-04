@@ -14,8 +14,8 @@ namespace Fikra.DAL.Interfaces
         IQueryable<T> GetAll();
         Task<T> GetByIdAsync(K id);
         Task<IQueryable<T>> SearchForAsync(Expression<Func<T, bool>> predicate);
-        Task<IQueryable<T>> SearchForAsync(Expression<Func<T, bool>> predicate, 
-	        params Expression<Func<T, object>>[] includes);
+        Task<IQueryable<T>> SearchForAsync(Expression<Func<T, bool>> predicate,
+			params Expression<Func<T, object>>[] includes);
 		Task<PagedList<T>> SearchForAsync(Expression<Func<T, bool>> predicate,
 			IResourceParameters<T, K> resourceParameters);
 		Task<long> CountAsync();

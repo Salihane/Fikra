@@ -9,6 +9,7 @@ using Fikra.API.Helpers.DashboardTask;
 using Fikra.API.Mappers;
 using Fikra.API.Mappers.Interfaces;
 using Fikra.API.Models;
+using Fikra.API.Models.DashboardTask;
 using Fikra.API.Services.Tasks;
 using Fikra.Common.Constants;
 using Fikra.Common.Extensions;
