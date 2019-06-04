@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
 using Microsoft.Extensions.Primitives;
 
-namespace Fikra.API.Helpers
+namespace Fikra.API.Helpers.ResourceResponse
 {
 	public class ResourceResult
 	{

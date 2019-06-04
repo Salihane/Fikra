@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Fikra.API.Helpers;
 using Fikra.API.Helpers.DashboardTask;
+using Fikra.API.Helpers.ResourceResponse;
 using Fikra.API.Mappers.Interfaces;
 using Fikra.API.Models;
 using Fikra.API.Models.DashboardTask;
@@ -34,6 +35,7 @@ namespace Fikra.API.Services.Tasks
 		private readonly IFikraMapper<DashboardTask, DashboardTaskDto> _dashboardTaskMapper;
 		private readonly ILinkDtoFactory<DashboardTask, Guid> _dashboardTaskLinkDtoFactory;
 		private readonly IResourceUri<DashboardTask, Guid> _dashboardTaskUri;
+		private readonly IResourceResultBuilder _resourceResultBuilder;
 		private readonly IUrlHelper _urlHelper;
 		private readonly IMapper _mapper;
 
@@ -44,7 +46,8 @@ namespace Fikra.API.Services.Tasks
 			IResourceUri<DashboardTask, Guid> dashboardTaskUri,
 			IMapper mapper, IUrlHelper urlHelper,
 			IFikraMapper<DashboardTask, DashboardTaskDto> dashboardTaskMapper,
-			ILinkDtoFactory<DashboardTask, Guid> dashboardTaskLinkDtoFactory)
+			ILinkDtoFactory<DashboardTask, Guid> dashboardTaskLinkDtoFactory,
+			IResourceResultBuilder resourceResultBuilder)
 		{
 			_dashboardTasksRepo = dashboardTasksRepo;
 			_dashboardTaskParameters = dashboardTaskParameters;
@@ -52,6 +55,7 @@ namespace Fikra.API.Services.Tasks
 			_urlHelper = urlHelper;
 			_dashboardTaskMapper = dashboardTaskMapper;
 			_dashboardTaskLinkDtoFactory = dashboardTaskLinkDtoFactory;
+			_resourceResultBuilder = resourceResultBuilder;
 			_dashboardRepo = dashboardRepo;
 			_dashboardTaskUri = dashboardTaskUri;
 		}
@@ -73,12 +77,10 @@ namespace Fikra.API.Services.Tasks
 
 				if (fieldsDoNotExist)
 				{
-					return new ResourceResult
-					{
-						Message = ResourceMessages.InvalidResourceFields,
-						ResultObject = null,
-						StatusCode = StatusCodes.Status400BadRequest
-					};
+					return _resourceResultBuilder
+						   .WithStatusCode(StatusCodes.Status400BadRequest)
+						   .WithMessage(ResourceMessages.InvalidResourceFields)
+						   .Build();
 				}
 
 				fields = _dashboardTaskParameters?.Fields;
@@ -90,14 +92,11 @@ namespace Fikra.API.Services.Tasks
 			var noTasksFound = taskEntities == null || taskEntities.Count == 0;
 			if (noTasksFound)
 			{
-				return new ResourceResult
-				{
-					Message = ResourceMessages.ResourceNotFound,
-					ResultObject = null,
-					StatusCode = StatusCodes.Status404NotFound
-				};
+				return _resourceResultBuilder
+					   .WithStatusCode(StatusCodes.Status404NotFound)
+					   .WithMessage(ResourceMessages.ResourceNotFound)
+					   .Build();
 			}
-
 
 			if (mediaType == CustomMediaTypes.HateoasJson)
 			{
@@ -114,34 +113,20 @@ namespace Fikra.API.Services.Tasks
 			string mediaType,
 			ModelStateDictionary modelState)
 		{
-
-			// todo: use Builder/Factory pattern for ResourceResource
-			// usage:
-			//ResourceResult.BuildBadRequestResult(message);
-			//ResourceResult.BuildUnprocessableEntity(modelState);
-			//ResourceResult.BuildNotFoundResult(message);
-			//...
-			//	
-			
-
-
 			if (dashboardTaskDtoCreate == null)
 			{
-				return new ResourceResult
-				{
-					StatusCode = StatusCodes.Status400BadRequest,
-					ResultObject = null,
-					Message = ResourceMessages.PostedResourceIsNull
-				};
+				return _resourceResultBuilder
+					   .WithStatusCode(StatusCodes.Status400BadRequest)
+					   .WithMessage(ResourceMessages.PostedResourceIsNull)
+					   .Build();
 			}
 
-			
 			var invalidModelState = CheckModelStateValidation(modelState);
 			if (invalidModelState != null)
 			{
 				return invalidModelState;
 			}
-			
+
 			var dashboardExistsResult = await CheckDashboardInexistenceAsync(dashboardId);
 			var dashboardDoseNotExist = dashboardExistsResult != null;
 			if (dashboardDoseNotExist)
@@ -156,7 +141,7 @@ namespace Fikra.API.Services.Tasks
 			}
 
 
-			
+
 
 
 			// Dashboard exists => Ok
@@ -172,11 +157,10 @@ namespace Fikra.API.Services.Tasks
 		{
 			if (!modelState.IsValid)
 			{
-				return new ResourceResult
-				{
-					StatusCode = StatusCodes.Status422UnprocessableEntity,
-					ResultObject = new Helpers.UnprocessableEntityObjectResult(modelState)
-				};
+				return _resourceResultBuilder
+					   .WithStatusCode(StatusCodes.Status422UnprocessableEntity)
+					   .WithResultObject(new Helpers.UnprocessableEntityObjectResult(modelState))
+					   .Build();
 			}
 
 			return null;
@@ -189,12 +173,12 @@ namespace Fikra.API.Services.Tasks
 
 			if (dashboardDoesNotExist)
 			{
-				return new ResourceResult
-				{
-					StatusCode = StatusCodes.Status404NotFound,
-					ResultObject = null,
-					Message = string.Format(ResourceMessages.ResourceWithIdNotFound, nameof(Dashboard), dashboardId)
-				};
+				return _resourceResultBuilder
+					   .WithStatusCode(StatusCodes.Status404NotFound)
+					   .WithMessage(string.Format(ResourceMessages.ResourceWithIdNotFound,
+												  nameof(Dashboard),
+												  dashboardId))
+					   .Build();
 			}
 
 			return null;
@@ -219,7 +203,7 @@ namespace Fikra.API.Services.Tasks
 			return taskExistsAlready ? BuildResultForExistingTask(resource) : null;
 		}
 
-		private static ResourceResult BuildResultForExistingTask(LinkedResource resource)
+		private ResourceResult BuildResultForExistingTask(LinkedResource resource)
 		{
 			var existingTask = resource?.Value.First();
 
@@ -236,14 +220,11 @@ namespace Fikra.API.Services.Tasks
 				}
 			};
 
-			var result = new ResourceResult
-			{
-				StatusCode = StatusCodes.Status409Conflict,
-				Message = ResourceMessages.PostedResourceExistsAlready,
-				ResultObject = linkedResource
-			};
-
-			return result;
+			return _resourceResultBuilder
+				   .WithStatusCode(StatusCodes.Status409Conflict)
+				   .WithMessage(ResourceMessages.PostedResourceExistsAlready)
+				   .WithResultObject(linkedResource)
+				   .Build();
 		}
 
 		private async Task<ResourceResult> GetDashboardTasksByNameAsync(int dashboardId, string dashboardTaskName)
@@ -284,8 +265,6 @@ namespace Fikra.API.Services.Tasks
 			PagedList<DashboardTask> taskEntities,
 			int dashboardId, ICollection<string> fields)
 		{
-			var resourceResult = new ResourceResult();
-
 			// todo: use named type "PaginationMetaData" instead of anonymous type
 			var paginationMetaData = new
 			{
@@ -295,8 +274,9 @@ namespace Fikra.API.Services.Tasks
 				totalPages = taskEntities.TotalPages
 			};
 
-			resourceResult.ResponseHeaders.Add(HttpHeader.Pagination,
-				Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetaData));
+			_resourceResultBuilder
+				.WithResponseHeader(HttpHeader.Pagination,
+									Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetaData));
 
 			var dashboardTaskDtos = await _dashboardTaskMapper.ToViewModelAsync(taskEntities);
 
@@ -329,28 +309,25 @@ namespace Fikra.API.Services.Tasks
 				Links = tasksLinks
 			};
 
-			resourceResult.ResultObject = returnedLinkedResource;
-			resourceResult.StatusCode = StatusCodes.Status200OK;
-			resourceResult.Message = string.Empty;
-
-			return resourceResult;
+			return _resourceResultBuilder
+				   .WithStatusCode(StatusCodes.Status200OK)
+				   .WithResultObject(returnedLinkedResource)
+				   .Build();
 		}
 
 		private async Task<ResourceResult> BuildNonHateoasResourceResultAsync(
 			PagedList<DashboardTask> taskEntities,
 			ICollection<string> taskFields)
 		{
-			var resourceResult = new ResourceResult();
-
 			var paginationMetaData = BuildPaginationMetaData(taskEntities);
-			resourceResult.ResponseHeaders.Add(HttpHeader.Pagination,
-				Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetaData));
-
 			var dashboardTaskDtos = await _dashboardTaskMapper.ToViewModelAsync(taskEntities);
-			resourceResult.ResultObject = dashboardTaskDtos.ShapeData(taskFields.ToStringArray());
-			resourceResult.StatusCode = StatusCodes.Status200OK;
 
-			return resourceResult;
+			return _resourceResultBuilder
+			       .WithStatusCode(StatusCodes.Status200OK)
+			       .WithResultObject(dashboardTaskDtos.ShapeData(taskFields.ToStringArray()))
+			       .WithResponseHeader(HttpHeader.Pagination,
+			                           Newtonsoft.Json.JsonConvert.SerializeObject(paginationMetaData))
+			       .Build();
 		}
 
 		private object BuildPaginationMetaData(PagedList<DashboardTask> taskEntities)

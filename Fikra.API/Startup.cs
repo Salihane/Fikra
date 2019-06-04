@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Fikra.API.Helpers;
 using Fikra.API.Helpers.DashboardTask;
+using Fikra.API.Helpers.ResourceResponse;
 using Fikra.API.Mappers;
 using Fikra.API.Mappers.Interfaces;
 using Fikra.API.Models;
@@ -68,6 +69,7 @@ namespace Fikra.API
             services.AddScoped(typeof(IFakeRepository<,>), typeof(FikraFakeRepository<,>));
             services.AddTransient<FikraContextSeedData>();
             services.AddTransient<FikraFakeContextSeedData>();
+            services.AddTransient<IResourceResultBuilder, ResourceResultBuilder>();
             services.AddTransient<IResourceUri<DashboardTask, Guid>, DashboardTaskResourceUri>();
             services.AddTransient<IResourceParameters<DashboardTask, Guid>, DashboardTaskResourceParameters>();
             services.AddTransient<ILinkDtoFactory<DashboardTask, Guid>, DashboardTaskLinkDtoFactory>();
