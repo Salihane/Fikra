@@ -15,7 +15,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fikra.POCS.EF.API", "POCS\E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fikra.Common", "Fikra.Common\Fikra.Common.csproj", "{29BB2D2C-63D7-499C-8B06-05B613AE5D79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fikra.API.UnitTests", "Fikra.API.UnitTests\Fikra.API.UnitTests.csproj", "{B4B9A90C-6908-4DDC-B70B-256ED6CA58B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fikra.API.UnitTests", "Fikra.API.UnitTests\Fikra.API.UnitTests.csproj", "{B4B9A90C-6908-4DDC-B70B-256ED6CA58B0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fikra.API.IntegrationTests", "Fikra.API.IntegrationTests\Fikra.API.IntegrationTests.csproj", "{BB14EF50-7D6D-408A-9C47-947243C6426A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SBHLib.Extensions", "..\SBHLib\SBHLib\SBHLib.Extensions\SBHLib.Extensions.csproj", "{BBE906F9-C46A-4E97-988F-49FC3C496B99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +55,14 @@ Global
 		{B4B9A90C-6908-4DDC-B70B-256ED6CA58B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4B9A90C-6908-4DDC-B70B-256ED6CA58B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4B9A90C-6908-4DDC-B70B-256ED6CA58B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB14EF50-7D6D-408A-9C47-947243C6426A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB14EF50-7D6D-408A-9C47-947243C6426A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB14EF50-7D6D-408A-9C47-947243C6426A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB14EF50-7D6D-408A-9C47-947243C6426A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBE906F9-C46A-4E97-988F-49FC3C496B99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBE906F9-C46A-4E97-988F-49FC3C496B99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBE906F9-C46A-4E97-988F-49FC3C496B99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBE906F9-C46A-4E97-988F-49FC3C496B99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

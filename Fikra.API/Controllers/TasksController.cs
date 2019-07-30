@@ -1,14 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Fikra.API.Extensions;
+using Fikra.API.Filters;
 using Fikra.API.Helpers;
 using Fikra.API.Helpers.DashboardTask;
 using Fikra.API.Models;
 using Fikra.API.Models.DashboardTask;
 using Fikra.API.Services.Tasks;
 using Fikra.Common.Constants;
+using Microsoft.AspNet.OData;
+using Microsoft.AspNet.OData.Query;
+using Microsoft.AspNet.OData.Routing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
@@ -16,7 +23,7 @@ using Microsoft.Extensions.Primitives;
 namespace Fikra.API.Controllers
 {
 	[ApiController]
-	public class TasksController : ControllerBase
+	public class TasksController : ODataController // ControllerBase
 	{
 		private readonly ITaskService _dashboardTaskService;
 		public TasksController(ITaskService dashboardTaskService)
@@ -29,31 +36,77 @@ namespace Fikra.API.Controllers
 			Route = RouteNames.Task.TasksByDashboard)]
 		[ProducesResponseType(typeof(IEnumerable<DashboardTaskDto>),
 			StatusCodes.Status200OK)]
-		public async Task<IActionResult> GetDashboardTasks(int dashboardId,
+    [ODataRoute]
+    //[EnableQuery(PageSize = 2, AllowedQueryOptions = AllowedQueryOptions.All)]
+    [EnableQuery()]
+    //[AddSelectQuery(nameof(DashboardTaskDto.Status))]
+    [AddExpandQuery(nameof(DashboardTaskDto.Links))]
+    public async Task<IActionResult> GetDashboardTasks(int dashboardId,
 			[FromQuery]DashboardTaskResourceParametersDto resourceParameters,
 			[FromHeader(Name = HttpHeader.Accept)]string mediaType)
-		{
-			var result = await _dashboardTaskService
-				.GetTasksByDashboardIdAsync(dashboardId, resourceParameters, mediaType);
+    {
+      var request = this.Request;
+			var (tasks, responseMetaData) = await _dashboardTaskService
+        .GetTasksByDashboardIdNewAsync(dashboardId,
+                                       resourceParameters,
+                                       mediaType);
 
-			Response.AddHeaders(result.ResponseHeaders);
+      var responseCode = responseMetaData?.ResponseCode ?? -1;
+      var responseMessage = responseMetaData?.ResponseMessage ?? string.Empty;
 
-			switch (result.StatusCode)
-			{
-				case StatusCodes.Status200OK:
-					return Ok(result.ResultObject);
-				case StatusCodes.Status404NotFound:
-					return NotFound(result.Message);
-				case StatusCodes.Status400BadRequest:
-					return BadRequest(result.Message);
-				default:
-					return NoContent();
-			}
+      Response.AddHeaders(responseMetaData?.ResponseHeaders);
+      Response.StatusCode = responseCode;
+
+      switch (responseCode)
+      {
+        case StatusCodes.Status200OK:
+          return Ok(tasks);
+        case StatusCodes.Status404NotFound:
+            return NotFound(responseMessage);
+        case StatusCodes.Status400BadRequest:
+          return BadRequest(responseMessage);
+        default:
+          return NoContent();
+      }
+
+
+   //   if (responseHeaders != null)
+   //   {
+   //     Response.AddHeaders(responseHeaders);
+   //   }
+
+			//return Ok(tasks);
+
+			//var result = await _dashboardTaskService
+			//	.GetTasksByDashboardIdAsync(dashboardId, resourceParameters, mediaType);
+
+			//Response.AddHeaders(result.ResponseHeaders);
+
+			//switch (result.StatusCode)
+			//{
+			//	case StatusCodes.Status200OK:
+			//		return Ok(result.ResultObject);
+			//	case StatusCodes.Status404NotFound:
+			//		return NotFound(result.Message);
+			//	case StatusCodes.Status400BadRequest:
+			//		return BadRequest(result.Message);
+			//	case StatusCodes.Status201Created:
+			//		var test = result.ResultObject;
+			//		return null;
+			//	//return CreatedAtRoute(ActionNames.GetContactNote,
+			//	//                      new { contactId = contactId, id = returnedContactNote.Id },
+			//	//                      returnedContactNote);
+
+			//	// todo:
+			//	default:
+			//		return NoContent();
+			//}
 		}
+
 		[AcceptVerbs(ActionMethods.Get,
-			Name = ActionNames.Tasks.GetTaskById,
-			Route = RouteNames.Task.TaskById)]
-		public async Task<IActionResult> GetTaskById(Guid id)
+			Name = ActionNames.Tasks.GetDashboardTaskById,
+			Route = RouteNames.Task.TaskByDashboardAndId)]
+		public async Task<IActionResult> GetTaskById(int dashboardId, Guid id)
 		{
 			return NoContent();
 		}
@@ -72,6 +125,13 @@ namespace Fikra.API.Controllers
 
 			switch (result.StatusCode)
 			{
+				case StatusCodes.Status201Created:
+					var createdAtRouteResource = result.ResultObject as CreatedAtRouteResource;
+					return CreatedAtRoute(createdAtRouteResource?.ActionName,
+					                      createdAtRouteResource?.RouteValues,
+					                      createdAtRouteResource?.CreatedEntity);
+
+				
 				case StatusCodes.Status400BadRequest:
 					return BadRequest(result.Message);
 				case StatusCodes.Status422UnprocessableEntity:
@@ -85,6 +145,8 @@ namespace Fikra.API.Controllers
 						result.Message,
 						result.ResultObject
 					});
+				case StatusCodes.Status500InternalServerError:
+					throw new Exception(result.Message);
 				default:
 					return NoContent();
 			}
@@ -111,5 +173,14 @@ namespace Fikra.API.Controllers
 		{
 			return NoContent();
 		}
-	}
+
+    [AcceptVerbs(ActionMethods.Get,
+      Name = ActionNames.Comments.GetTaskComments,
+      Route = RouteNames.Comment.CommentsByTask)]
+    public async Task<IActionResult> GetDashboardTaskComments(Guid id)
+    {
+      return NoContent();
+    }
+
+  }
 }

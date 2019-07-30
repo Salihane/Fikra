@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,12 +24,15 @@ namespace Fikra.Common.Extensions
 			source.Add(item);
 			return true;
 		}
-		
-		public static string ToCommaSeparatedString(this ICollection<string> source)
+
+		public static void AddOrInit<T>(this ICollection<T> source, T item)
 		{
-			return source == null 
-				? null 
-				: string.Join(Constants.Chars.Comma, source);
+			if (source == null)
+			{
+				source = new List<T>();
+			}
+
+			source.Add(item);
 		}
 
 		public static string[] ToStringArray(this ICollection<string> source)

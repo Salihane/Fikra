@@ -14,16 +14,20 @@ namespace Fikra.DAL
 	public class DummyDataManager : IDummyDataManager
 	{
 		private static readonly Random Random = new Random(DateTime.Now.Millisecond);
+		private IMapper _mapper;
 
-		public DummyDataManager()
+		public DummyDataManager(IMapper mapper)
 		{
-			Mapper.Initialize(config =>
-			{
-				config.CreateMap<Task, ProjectTask>();
-				config.CreateMap<Task, DashboardTask>();
-			});
+			//	Mapper.Reset();
+			//	Mapper.Initialize(config =>
+			//	{
+			//		config.CreateMap<Task, ProjectTask>();
+			//		config.CreateMap<Task, DashboardTask>();
+			//	});
+
+			_mapper = mapper;
 		}
-		
+
 		public IEnumerable<Dashboard> CreateDashboards()
 		{
 			// Home
@@ -104,7 +108,7 @@ namespace Fikra.DAL
 			return new Model.Entities.Task[] { readBook, developApp, dueTask };
 		}
 
-		private Dashboard CreateDashboard(string dashboardName)
+		public Dashboard CreateDashboard(string dashboardName)
 		{
 			var daysRange = Random.Next(1, 5);
 
@@ -118,13 +122,14 @@ namespace Fikra.DAL
 			return dashboard;
 		}
 
-		private DashboardTask CreateDashboardTask(string taskName)
+		public DashboardTask CreateDashboardTask(string taskName)
 		{
 			var task = CreateTask(taskName);
-			return Mapper.Map<Model.Entities.Task, DashboardTask>(task);
+			//return Mapper.Map<Model.Entities.Task, DashboardTask>(task);
+			return _mapper.Map<Model.Entities.Task, DashboardTask>(task);
 		}
 
-		private Model.Entities.Task CreateTask(string taskName)
+		public Model.Entities.Task CreateTask(string taskName)
 		{
 			var daysRangee = Random.Next(1, 5);
 
@@ -165,7 +170,7 @@ namespace Fikra.DAL
 			return task;
 		}
 
-		private Project CreateProject(string projectName)
+		public Project CreateProject(string projectName)
 		{
 			var daysRange = Random.Next(1, 3);
 
@@ -179,13 +184,14 @@ namespace Fikra.DAL
 			return project;
 		}
 
-		private ProjectTask CreateProjectTask(string taskName)
+		public ProjectTask CreateProjectTask(string taskName)
 		{
 			var task = CreateTask(taskName);
-			return Mapper.Map<Model.Entities.Task, ProjectTask>(task);
+			//return Mapper.Map<Model.Entities.Task, ProjectTask>(task);
+			return _mapper.Map<Model.Entities.Task, ProjectTask>(task);
 		}
 
-		private T GetRandomEnumValue<T>()
+		public T GetRandomEnumValue<T>()
 		{
 			var values = Enum.GetValues(typeof(T));
 			return (T)values.GetValue(Random.Next(values.Length));

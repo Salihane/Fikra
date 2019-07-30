@@ -8,8 +8,5 @@ namespace Fikra.Common.Helpers
 	{
 		int PageNumber { get; set; }
 		int PageSize { get; set; }
-		ResourceFilter<T, K> ResourceFilter { get; set; }
-		string SearchQuery { get; set; }
-		ICollection<string> Fields { get; set; }
 	}
 }

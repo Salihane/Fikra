@@ -6,23 +6,21 @@ namespace Fikra.Common.Helpers
 {
 	public class PagedList<T> : List<T>
 	{
-		public int CurrentPage { get; private set; }
-		public int TotalPages { get; private set; }
-		public int PageSize { get; private set; }
-		public int TotalItems { get; private set; }
-
-		public bool HasPrevious => CurrentPage > 1;
-
-		public bool HasNext => CurrentPage < TotalPages;
+		public PaginationMetaData PaginationMetaData { get; set; }
 
 		public object Include { get; set; }
 
 		private PagedList(IEnumerable<T> items, int totalItems, int pageNumber, int pageSize)
 		{
-			TotalItems = totalItems;
-			CurrentPage = pageNumber;
-			PageSize = pageSize;
-			TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+			PaginationMetaData = new PaginationMetaData
+			{
+				PageItemsMetaData =
+					new PageItemsMetaData(pageNumber,
+										  (int)Math.Ceiling(totalItems / (double)pageSize),
+										  pageSize,
+										  totalItems)
+			};
+
 			AddRange(items);
 
 		}
@@ -33,5 +31,33 @@ namespace Fikra.Common.Helpers
 			var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
 			return new PagedList<T>(items, totalItems, pageNumber, pageSize);
 		}
+
+		public PageItemsMetaData GetPageItemsMetaData()
+		{
+			return PaginationMetaData.PageItemsMetaData;
+		}
+	}
+
+	public class PageItemsMetaData
+	{
+		public PageItemsMetaData(int currentPage, int totalPages, int pageSize, int totalItems)
+		{
+			CurrentPage = currentPage;
+			TotalPages = totalPages;
+			PageSize = pageSize;
+			TotalItems = totalItems;
+		}
+
+		public int CurrentPage { get; private set; }
+		public int TotalPages { get; private set; }
+		public int PageSize { get; private set; }
+		public int TotalItems { get; private set; }
+	}
+
+	public class PaginationMetaData
+	{
+		public PageItemsMetaData PageItemsMetaData { get; set; }
+		public bool HasPrevious => PageItemsMetaData?.CurrentPage > 1;
+		public bool HasNext => PageItemsMetaData?.CurrentPage < PageItemsMetaData?.TotalPages;
 	}
 }

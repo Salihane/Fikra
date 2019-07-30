@@ -32,20 +32,14 @@ namespace Fikra.API.Helpers.DashboardTask
 						new
 						{
 							pageNumber = dashboardTaskResourceParamDto.PageNumber - 1,
-							pageSize = dashboardTaskResourceParamDto.PageSize,
-							filter = dashboardTaskResourceParamDto.Filter,
-							search = dashboardTaskResourceParamDto.Search,
-							fields = dashboardTaskResourceParamDto.Fields
+							pageSize = dashboardTaskResourceParamDto.PageSize
 						});
 				case ResourceUriType.Next:
 					return urlHelper.Link(urlName,
 						new
 						{
 							pageNumber = dashboardTaskResourceParamDto.PageNumber + 1,
-							pageSize = dashboardTaskResourceParamDto.PageSize,
-							filter = dashboardTaskResourceParamDto.Filter,
-							search = dashboardTaskResourceParamDto.Search,
-							fields = dashboardTaskResourceParamDto.Fields
+							pageSize = dashboardTaskResourceParamDto.PageSize
 						});
 				case ResourceUriType.Current:
 				default:
@@ -53,10 +47,7 @@ namespace Fikra.API.Helpers.DashboardTask
 						new
 						{
 							pageNumber = dashboardTaskResourceParamDto.PageNumber,
-							pageSize = dashboardTaskResourceParamDto.PageSize,
-							filter = dashboardTaskResourceParamDto.Filter,
-							search = dashboardTaskResourceParamDto.Search,
-							fields = dashboardTaskResourceParamDto.Fields
+							pageSize = dashboardTaskResourceParamDto.PageSize
 						});
 			}
 		}

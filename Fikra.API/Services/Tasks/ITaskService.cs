@@ -9,17 +9,26 @@ using Fikra.API.Helpers.ResourceResponse;
 using Fikra.API.Models.DashboardTask;
 using Fikra.Model.Entities;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Primitives;
 
 namespace Fikra.API.Services.Tasks
 {
     public interface ITaskService
-    {
-	    Task<ResourceResult> GetTasksByDashboardIdAsync(
-		    int dashboardId,
-		    DashboardTaskResourceParametersDto resourceParametersDto,
-		    string mediaType);
+	{
+		Task<(IEnumerable<DashboardTaskDto> tasks, ResponseMetaData responseMetaData)> GetTasksByDashboardIdNewAsync(
+			int dashboardId,
+			DashboardTaskResourceParametersDto resourceParametersDto,
+			string mediaType);
 
-		   Task<ResourceResult> CreateTaskAsync(
+
+
+
+		Task<ResourceResult> GetTasksByDashboardIdAsync(
+			int dashboardId,
+			DashboardTaskResourceParametersDto resourceParametersDto,
+			string mediaType);
+
+		Task<ResourceResult> CreateTaskAsync(
 			   int dashboardId,
 			   DashboardTaskDtoCreate dashboardTaskDtoCreate, 
 			   string mediaType, 

@@ -10,6 +10,7 @@ namespace Fikra.API.Helpers.ResourceResponse
 	public interface IResourceResultBuilder
 	{
 		ResourceResult Build();
+		IResourceResultBuilder Clear();
 		IResourceResultBuilder WithMessage(string message);
 		IResourceResultBuilder WithResultObject(object resultObj);
 		IResourceResultBuilder WithResponseHeader(string key, StringValues values);

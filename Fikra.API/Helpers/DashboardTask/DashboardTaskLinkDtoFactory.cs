@@ -71,7 +71,7 @@ namespace Fikra.API.Helpers.DashboardTask
 			return links;
 		}
 
-		public IEnumerable<LinkDto> CreateCrudLinksForEntity(Guid entityId, string entityFields)
+		public IEnumerable<LinkDto> CreateCrudLinksForEntity(Guid entityId, string entityFields = null)
 		{
 			dynamic linkValues = new ExpandoObject();
 			linkValues.Id = entityId;
@@ -79,7 +79,7 @@ namespace Fikra.API.Helpers.DashboardTask
 			if (!string.IsNullOrEmpty(entityFields))
 				linkValues.Fields = entityFields;
 
-			var getTaskLink = LinkDtoBuilder.CreateLink(_urlHelper, ActionNames.Tasks.GetTaskById,
+			var getTaskLink = LinkDtoBuilder.CreateLink(_urlHelper, ActionNames.Tasks.GetDashboardTaskById,
 LinkRelations.Task.GetTask, ActionMethods.Get, new { id = entityId.ToString() });
 
 			var deleteTaskLink = LinkDtoBuilder.CreateLink(_urlHelper, ActionNames.Tasks.DeleteTask,
@@ -93,8 +93,8 @@ LinkRelations.Task.GetTask, ActionMethods.Get, new { id = entityId.ToString() })
 
 			linkValues = new ExpandoObject();
 			linkValues.TaskId = entityId;
-			var taskCommentsLink = LinkDtoBuilder.CreateLink(_urlHelper, ActionNames.Comments.GetDashboardTaskComments,
-				LinkRelations.Task.GetComments, ActionMethods.Get, new { taskId = entityId });
+			var taskCommentsLink = LinkDtoBuilder.CreateLink(_urlHelper, ActionNames.Comments.GetTaskComments,
+				LinkRelations.Task.GetComments, ActionMethods.Get, new { id = entityId });
 
 			return new List<LinkDto>
 			{

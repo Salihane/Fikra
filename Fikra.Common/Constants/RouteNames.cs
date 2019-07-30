@@ -6,14 +6,21 @@ using System.Threading.Tasks;
 
 namespace Fikra.Common.Constants
 {
-    public static class RouteNames
+  public static class RouteNames
+  {
+    public static class Task
     {
-	    public static class Task
-	    {
-		    public const string TasksByDashboard = "api/dashboards/{dashboardId}/tasks";
-		    public const string Tasks = "api/tasks/";
-		    public const string TaskByDashboard = "api/dashboards/{dashboardId}/task";
-		    public const string TaskById = "api/tasks/{id}";
-	    }
+      public const string TasksByDashboard = "api/dashboards/{dashboardId}/tasks";
+      public const string TaskByDashboard = "api/dashboards/{dashboardId}/task/";
+      public const string TaskByDashboardAndId = "api/dashboards/{dashboardId}/task/{id}";
+
+      public const string Tasks = "api/tasks/";
+      public const string TaskById = "api/tasks/{id}";
     }
+
+    public static class Comment
+    {
+      public const string CommentsByTask = "api/tasks/{id}/comments";
+    }
+  }
 }

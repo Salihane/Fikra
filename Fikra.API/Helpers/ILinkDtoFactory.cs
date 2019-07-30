@@ -10,7 +10,7 @@ namespace Fikra.API.Helpers
 	{
 	    LinkDto CreateGetEntityLink(ResourceUriType resourceUriType);
 	    IEnumerable<LinkDto> CreateNavigationLinksForEntity(bool hasNext, bool hasPrevious, object linkValues);
-	    IEnumerable<LinkDto> CreateCrudLinksForEntity(K entityId, string entityFields);
+	    IEnumerable<LinkDto> CreateCrudLinksForEntity(K entityId, string entityFields = null);
 
     }
 }

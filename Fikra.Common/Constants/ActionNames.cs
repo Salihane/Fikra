@@ -12,7 +12,7 @@ namespace Fikra.Common.Constants
 		{
 			public const string GetDashboardTasks = "GetDashboardTasks";
 			public const string CreateDashboardTask = "CreateDashboardTask";
-			public const string GetTaskById = "GetTaskById";
+			public const string GetDashboardTaskById = "GetDashboardTaskById";
 			public const string DeleteTask = "DeleteTask";
 			public const string UpdateTask = "UpdateTask";
 			public const string PatchTask = "PatchTask";
@@ -20,7 +20,7 @@ namespace Fikra.Common.Constants
 
 		public static class Comments
 		{
-			public const string GetDashboardTaskComments = "GetDashboardTaskComments";
+			public const string GetTaskComments = "GetTaskComments";
 		}
 	}
 }

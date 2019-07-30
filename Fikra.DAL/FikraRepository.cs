@@ -37,18 +37,18 @@ namespace Fikra.DAL
 		{
 			var collection = await SearchForAsync(predicate);
 
-			var applyFilter = resourceParameters?.ResourceFilter != null;
-			if (applyFilter)
-			{
-				collection = collection
-					.Where(resourceParameters.ResourceFilter.Expression);
-			}
+			//var applyFilter = resourceParameters?.ResourceFilter != null;
+			//if (applyFilter)
+			//{
+			//	collection = collection
+			//		.Where(resourceParameters.ResourceFilter.Expression);
+			//}
 
-			var hasSearchQuery = !string.IsNullOrWhiteSpace(resourceParameters?.SearchQuery);
-			if (hasSearchQuery)
-			{
-				collection = collection.SearchFor(resourceParameters.SearchQuery);
-			}
+			//var hasSearchQuery = !string.IsNullOrWhiteSpace(resourceParameters?.SearchQuery);
+			//if (hasSearchQuery)
+			//{
+			//	collection = collection.SearchFor(resourceParameters.SearchQuery);
+			//}
 
 			var pageNumber = resourceParameters?.PageNumber ?? 1;
 			var pageSize = resourceParameters?.PageSize ?? collection.Count();
