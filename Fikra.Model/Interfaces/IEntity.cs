@@ -2,10 +2,8 @@
 
 namespace Fikra.Model.Interfaces
 {
-    public interface IEntity<T> where T : IEquatable<T>
+    public interface IEntity<T> : ITrackableEntity where T : IEquatable<T>
     {
         T Id { get; set; }
-        DateTime CreatedOn { get; set; }
-        DateTime ModifiedOn { get; set; }
     }
 }

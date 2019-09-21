@@ -12,7 +12,8 @@ namespace Fikra.Model.Entities
         public string Name { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime ModifiedOn { get; set; }
-        public DateTime? Due { get; set; }
+        public bool IsDeleted { get; set; }
+		public DateTime? Due { get; set; }
         public Status Status { get; set; }
         public Priority Priority { get; set; }
         public Effort Effort { get; set; }

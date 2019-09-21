@@ -4,14 +4,16 @@ using Fikra.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Fikra.DAL.Migrations
 {
     [DbContext(typeof(FikraContext))]
-    partial class FikraContextModelSnapshot : ModelSnapshot
+    [Migration("20190921003508_Adding-SoftDelete")]
+    partial class AddingSoftDelete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

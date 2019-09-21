@@ -15,15 +15,20 @@ namespace Fikra.API.Services.Tasks
 {
     public interface ITaskService
 	{
-		Task<(IEnumerable<DashboardTaskDto> tasks, ResponseMetaData responseMetaData)> GetTasksByDashboardIdNewAsync(
+		Task<(IEnumerable<DashboardTaskDto> tasks, ResponseMetaData responseMetaData)> GetDashboardTasksAsync(
 			int dashboardId,
 			DashboardTaskResourceParametersDto resourceParametersDto,
 			string mediaType);
 
+    Task<(DashboardTaskDto task, ResponseMetaData responseMetaData)> GetDashboardTaskByIdAsync(
+      Guid taskId,
+      DashboardTaskResourceParametersDto resourceParametersDto,
+      string mediaType);
 
 
 
-		Task<ResourceResult> GetTasksByDashboardIdAsync(
+
+    Task<ResourceResult> GetTasksByDashboardIdAsync(
 			int dashboardId,
 			DashboardTaskResourceParametersDto resourceParametersDto,
 			string mediaType);

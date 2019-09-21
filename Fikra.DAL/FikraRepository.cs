@@ -29,7 +29,7 @@ namespace Fikra.DAL
 
 		public IQueryable<T> GetAll()
 		{
-			return _dbSet;
+			return _dbSet.AsNoTracking();
 		}
 
 		public async Task<PagedList<T>> SearchForAsync(Expression<Func<T, bool>> predicate,
