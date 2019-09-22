@@ -51,7 +51,6 @@ namespace Fikra.API.Mappers
 
 	  var taskId = source.Id;
 	  var y = await _dashboardTasksRepo.ExecuteStoredProc<TaskCommentsCount>(storedProc);
-	  //var x = await _dashboardTasksRepo.GetCountAsync(source.Id);
       var childsCounts = await _dashboardTasksRepo.CountChildsAsync(source, taskChildNames);
       var taskDto = _mapper.Map<DashboardTaskDto>(source);
       taskDto.CommentsCount = childsCounts[nameof(DashboardTask.Comments)];
