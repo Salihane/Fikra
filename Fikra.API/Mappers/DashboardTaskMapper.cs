@@ -38,22 +38,13 @@ namespace Fikra.API.Mappers
     {
       if (source == null) return null;
 
-      var taskChildNames = new[] { nameof(DashboardTask.Comments) };
-	  //var taskId = new SqlParameter("@TaskId", SqlDbType.UniqueIdentifier) {Value = new Guid("DD413A21-6431-4F70-EAB5-08D73E4DFBEF"), Direction = ParameterDirection.Input};
-	  //var count = new SqlParameter("@CommentsCount", SqlDbType.Int) {Direction = ParameterDirection.Output};
-	  //var parms = new SqlParameter[] {taskId, count};
-
-	  //var comments = _dashboardTasksRepo.ExecuteStoredProc("[dbo].[GetTaskComments] @TaskId", taskId);
-	  //var commentsCount = _dashboardTasksRepo.ExecuteStoredProc("[dbo].[CountTaskComments] @TaskId,  @CommentsCount OUT", parms);
-
-
 	  var storedProc = new TaskCommentsCountProcedure(source.Id);
+	  var commentsCount = await _dashboardTasksRepo.ExecuteStoredProc<TaskCommentsCount>(storedProc);
 
-	  var taskId = source.Id;
-	  var y = await _dashboardTasksRepo.ExecuteStoredProc<TaskCommentsCount>(storedProc);
-      var childsCounts = await _dashboardTasksRepo.CountChildsAsync(source, taskChildNames);
       var taskDto = _mapper.Map<DashboardTaskDto>(source);
-      taskDto.CommentsCount = childsCounts[nameof(DashboardTask.Comments)];
+
+      var numberOfCounts = commentsCount.FirstOrDefault();
+      taskDto.CommentsCount = numberOfCounts?.CommentsCount ?? 0;
 
       return taskDto;
     }
