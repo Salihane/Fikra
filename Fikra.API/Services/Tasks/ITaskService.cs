@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using Fikra.API.Helpers;
 using Fikra.API.Helpers.DashboardTask;
 using Fikra.API.Helpers.ResourceResponse;
+using Fikra.API.Models.Dashboard;
 using Fikra.API.Models.DashboardTask;
 using Fikra.Model.Entities;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Primitives;
+using Task = System.Threading.Tasks.Task;
 
 namespace Fikra.API.Services.Tasks
 {
@@ -38,5 +40,7 @@ namespace Fikra.API.Services.Tasks
 			   DashboardTaskDtoCreate dashboardTaskDtoCreate, 
 			   string mediaType, 
 			   ModelStateDictionary modelState);
-    }
+
+		Task AddDashbaordWithTasksAsync(DashboardDto dashbaord, IEnumerable<DashboardTaskDto> tasks);
+	}
 }

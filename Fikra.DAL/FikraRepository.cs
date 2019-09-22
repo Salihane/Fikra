@@ -3,12 +3,19 @@ using Fikra.Model.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Fikra.Common.Extensions;
 using Fikra.Common.Helpers;
 using System.Linq.Dynamic.Core;
+using System.Text;
+using Fikra.DAL.StoredProcedures;
+using Fikra.Model.QueryEntities;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Fikra.DAL
 {
@@ -22,6 +29,19 @@ namespace Fikra.DAL
 			_context = context;
 			_dbSet = context.Set<T>();
 		}
+
+		public async Task<IEnumerable<TQuery>> ExecuteStoredProc<TQuery>(IStoredProcedure storedProcedure) where TQuery : class
+		{
+			var query = storedProcedure.SqlQuery;
+			var parameters = storedProcedure.SqlParameters.ToArray<object>();
+
+			var result = await _context.Query<TQuery>()
+									  .FromSql(query, parameters)
+									  .ToListAsync();
+
+			return result;
+		}
+
 		public void Add(T entity)
 		{
 			_dbSet.Add(entity);
@@ -63,6 +83,24 @@ namespace Fikra.DAL
 
 		public async Task<Dictionary<string, int>> CountChildsAsync(T entity, params string[] childNames)
 		{
+			try
+			{
+				var child = _context.Entry(entity).Collections.First(x => x.Metadata.Name == childNames.First());
+				var tp = child.Metadata.PropertyInfo.PropertyType;
+				var tpe = child.Metadata.PropertyInfo.GetType();
+				var et = typeof(T);
+				var xp = _context.Entry(entity).Collection(childNames.First());
+				var xy = xp.GetType();
+
+
+			}
+			catch (Exception ex)
+			{
+				var x = ex.Message;
+			}
+			var mapping = _context.Model.FindEntityType(typeof(T)).Relational();
+			var entityName = mapping.TableName;
+
 			var childsCount = new Dictionary<string, int>();
 			foreach (var childName in childNames)
 			{
@@ -75,6 +113,7 @@ namespace Fikra.DAL
 
 		public async Task<int> CountChildAsync(T entity, string childName)
 		{
+			// todo: count only childs with IsDeleted = false
 			return await Task.Run(() => _context.Entry(entity)
 				.Collection(childName)
 				.Query()
@@ -88,12 +127,23 @@ namespace Fikra.DAL
 
 		public void Remove(T entity)
 		{
-			_dbSet.Remove(entity);
+			//_dbSet.Remove(entity);
+			entity.IsDeleted = true;
 		}
 
 		public async Task<bool> SaveChangesAsync()
 		{
 			return (await _context.SaveChangesAsync()) > 0;
+		}
+
+		public async Task<IDbContextTransaction> StartTransactionAsync()
+		{
+			return await _context.Database.BeginTransactionAsync();
+		}
+
+		public object ExecuteStoredProc(string storedProcName, params SqlParameter[] parameters)
+		{
+			return _dbSet.FromSql(storedProcName, parameters);
 		}
 
 		public async Task<IQueryable<T>> SearchForAsync(Expression<Func<T, bool>> predicate)
@@ -111,7 +161,7 @@ namespace Fikra.DAL
 		public async Task<IQueryable<T>> SearchForAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
 		{
 			var query = await SearchForAsync(predicate);
-			return await Task.Run(() => 
+			return await Task.Run(() =>
 			includes.Aggregate(query, (current, includeProperty) => current.Include(includeProperty)));
 
 		}

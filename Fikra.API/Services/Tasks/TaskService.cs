@@ -10,6 +10,7 @@ using Fikra.API.Helpers;
 using Fikra.API.Helpers.DashboardTask;
 using Fikra.API.Helpers.ResourceResponse;
 using Fikra.API.Mappers.Interfaces;
+using Fikra.API.Models.Dashboard;
 using Fikra.API.Models.DashboardTask;
 using Fikra.Common.Constants;
 using Fikra.Common.Extensions;
@@ -305,6 +306,20 @@ namespace Fikra.API.Services.Tasks
 				 .WithStatusCode(StatusCodes.Status500InternalServerError)
 				 .WithMessage(errorMsg)
 				 .Build();
+		}
+
+		// todo: example below on how to use Unit Of Work
+		public async Task AddDashbaordWithTasksAsync(DashboardDto dashboard, IEnumerable<DashboardTaskDto> tasks)
+		{
+			// Unit Of Work example
+			// If something fails, then the whole transaction will be rolledback
+			using (var transaction = await _dashboardTasksRepo.StartTransactionAsync())
+			{
+				//_dashboardTasksRepo.Add(tasks);
+				//dashboard.Tasks.AddRange(tasks);
+				//_dashboardRepo.Add(dashboard);
+				//transaction.Commit();
+			}
 		}
 
 

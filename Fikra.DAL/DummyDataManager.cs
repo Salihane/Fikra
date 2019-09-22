@@ -100,8 +100,8 @@ namespace Fikra.DAL
 
 		public IEnumerable<Model.Entities.Task> CreateTasks()
 		{
-			var readBook = CreateTask("Read the Clean Architecture book");
-			var developApp = CreateTask("Build an Angular app using .NET Core");
+			var readBook = CreateTask("Read the Clean Architecture book", 5);
+			var developApp = CreateTask("Build an Angular app using .NET Core", 2);
 			var dueTask = CreateTask("A due task");
 			dueTask.Due = DateTime.Now.AddDays(-1);
 
@@ -124,21 +124,28 @@ namespace Fikra.DAL
 
 		public DashboardTask CreateDashboardTask(string taskName)
 		{
-			var task = CreateTask(taskName);
-			//return Mapper.Map<Model.Entities.Task, DashboardTask>(task);
+			var numberOfComments = taskName.Length % 7;
+			var task = CreateTask(taskName, numberOfComments);
 			return _mapper.Map<Model.Entities.Task, DashboardTask>(task);
 		}
 
-		public Model.Entities.Task CreateTask(string taskName)
+		public Model.Entities.Task CreateTask(string taskName, int numberOfComments = 1)
 		{
 			var daysRangee = Random.Next(1, 5);
 
-			var comment = new TaskComment
+			var comments = new Collection<TaskComment>();
+			for (var i = 1; i <= numberOfComments; i++)
 			{
-				CreatedOn = DateTime.Now.AddDays(-(daysRangee + 1)),
-				ModifiedOn = DateTime.Now.AddDays(-(daysRangee + 1)),
-				Value = $"This is a comment for {taskName}"
-			};
+				var comment = new TaskComment
+				{
+					CreatedOn = DateTime.Now.AddDays(-(daysRangee + 1)),
+					ModifiedOn = DateTime.Now.AddDays(-(daysRangee + 1)),
+					Value = $"This is comment {i} for {taskName}"
+				};
+
+				comments.Add(comment);
+			}
+
 
 			var estimate = daysRangee + 3;
 			var completed = Random.Next(1, estimate);
@@ -157,7 +164,7 @@ namespace Fikra.DAL
 			var status = GetRandomEnumValue<Status>();
 			var task = new Model.Entities.Task
 			{
-				Comments = new Collection<TaskComment> { comment },
+				Comments = new Collection<TaskComment>(comments),
 				CreatedOn = DateTime.Now.AddDays(-(daysRangee + 3)),
 				ModifiedOn = DateTime.Now.AddDays(-(daysRangee + 3)),
 				Due = DateTime.Now.AddDays(daysRangee + 3),
@@ -186,8 +193,8 @@ namespace Fikra.DAL
 
 		public ProjectTask CreateProjectTask(string taskName)
 		{
-			var task = CreateTask(taskName);
-			//return Mapper.Map<Model.Entities.Task, ProjectTask>(task);
+			var numberOfComments = taskName.Length % 5;
+			var task = CreateTask(taskName, numberOfComments);
 			return _mapper.Map<Model.Entities.Task, ProjectTask>(task);
 		}
 

@@ -2,9 +2,12 @@
 using Fikra.Model.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Text;
 using System.Threading.Tasks;
 using Fikra.Model.Entities;
+using Microsoft.EntityFrameworkCore.Storage;
+using Task = Fikra.Model.Entities.Task;
 
 namespace Fikra.DAL.Interfaces
 {
@@ -15,5 +18,7 @@ namespace Fikra.DAL.Interfaces
         void Remove(T entity);
 
         Task<bool> SaveChangesAsync();
+        Task<IDbContextTransaction> StartTransactionAsync();
+        object ExecuteStoredProc(string storedProcName, params SqlParameter[] parameters);
     }
 }

@@ -3,12 +3,16 @@ using Fikra.Model.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Fikra.Common.Extensions;
 using Fikra.Common.Helpers;
 using System.Linq.Dynamic.Core;
+using Fikra.DAL.StoredProcedures;
+using Fikra.Model.QueryEntities;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Fikra.DAL
 {
@@ -81,6 +85,16 @@ namespace Fikra.DAL
 				.Count());
 		}
 
+		public Task<IEnumerable<TQuery>> ExecuteStoredProc<TQuery>(IStoredProcedure storedProcedure) where TQuery : class
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<IEnumerable<TQuery>> ExecuteStoredProc<TQuery>(string storedProcName, params object[] storedProcParams) where TQuery : class
+		{
+			throw new NotImplementedException();
+		}
+
 		public async Task<T> GetByIdAsync(K id)
 		{
 			return await _dbSet.FindAsync(id);
@@ -94,6 +108,16 @@ namespace Fikra.DAL
 		public async Task<bool> SaveChangesAsync()
 		{
 			return (await _context.SaveChangesAsync()) > 0;
+		}
+
+		public Task<IDbContextTransaction> StartTransactionAsync()
+		{
+			throw new NotImplementedException();
+		}
+
+		public object ExecuteStoredProc(string storedProcName, params SqlParameter[] parameters)
+		{
+			throw new NotImplementedException();
 		}
 
 		public async Task<IQueryable<T>> SearchForAsync(Expression<Func<T, bool>> predicate)

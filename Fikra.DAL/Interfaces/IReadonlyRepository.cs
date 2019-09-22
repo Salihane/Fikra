@@ -6,12 +6,14 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Fikra.Common.Helpers;
+using Fikra.DAL.StoredProcedures;
+using Fikra.Model.QueryEntities;
 
 namespace Fikra.DAL.Interfaces
 {
     public interface IReadonlyRepository<T, K> where T : IEntity<K> where K : IEquatable<K>
     {
-        IQueryable<T> GetAll();
+		IQueryable<T> GetAll();
         Task<T> GetByIdAsync(K id);
         Task<IQueryable<T>> SearchForAsync(Expression<Func<T, bool>> predicate);
         Task<IQueryable<T>> SearchForAsync(Expression<Func<T, bool>> predicate,
@@ -22,5 +24,9 @@ namespace Fikra.DAL.Interfaces
 		Task<Dictionary<string, int>> CountChildsAsync(T entity, params string[] childNames);
 
 		Task<int> CountChildAsync(T entity, string childName);
-	}
+
+		Task<IEnumerable<TQuery>> ExecuteStoredProc<TQuery>(IStoredProcedure storedProcedure)
+			where TQuery : class;
+
+    }
 }
