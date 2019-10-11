@@ -10,7 +10,6 @@ namespace Fikra.DAL.StoredProcedures
     public interface IStoredProcedure
     {
 	    string Name { get; }
-	    //Dictionary<string, object> Parameters { get; set; }
 	    string Body { get; }
 		string SqlQuery { get; }
 		ICollection<SqlParameter> SqlParameters { get; set; }
