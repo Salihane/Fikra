@@ -144,5 +144,19 @@ namespace Fikra.Common.Extensions
 
 			return result;
 		}
+
+		public static string ReplaceLastOccurrence(this string source, string oldString, string newString)
+		{
+			if (string.IsNullOrEmpty(source)) return source;
+
+			var index = source.LastIndexOf(oldString, StringComparison.InvariantCultureIgnoreCase);
+			if (index < 0) return source;
+
+			var result = source.Remove(index, oldString.Length)
+			                   .Insert(index, newString);
+
+			return result;
+
+		}
 	}
 }

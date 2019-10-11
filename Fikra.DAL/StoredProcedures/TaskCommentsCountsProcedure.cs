@@ -15,12 +15,13 @@ namespace Fikra.DAL.StoredProcedures
 {
     public class TaskCommentsCountsProcedure : IStoredProcedure
     {
+	    private GuidList _guidList;
 	    public readonly string TaskIdsKey = $"@{nameof(Model.QueryEntities.TaskCommentsCount.TaskId)}s";
 	    public string Name => nameof(TaskCommentsCountsProcedure);
 	    public string SqlQuery => $"{Name} {StoredProcedureUtility.GetParametersSignature(this)}";
 	    public ICollection<SqlParameter> SqlParameters { get; set; }
 	    public string Body => $@"CREATE PROCEDURE {Name}
-						{TaskIdsKey} {new GuidList().Name} READONLY
+						{TaskIdsKey} {_guidList.Name} READONLY
 						AS
 						BEGIN
 							SET NOCOUNT ON;
@@ -32,6 +33,7 @@ namespace Fikra.DAL.StoredProcedures
 
 	    public TaskCommentsCountsProcedure()
 	    {
+			_guidList = new GuidList();
 		    SqlParameters = new Collection<SqlParameter>
 		    {
 			    new SqlParameter(TaskIdsKey, SqlDbType.Structured)
@@ -45,11 +47,8 @@ namespace Fikra.DAL.StoredProcedures
 
 	    public TaskCommentsCountsProcedure(IEnumerable<Guid> taskIds) : this()
 	    {
-			var dt = new DataTable();
-			dt.Columns.Add("GUID");
-			taskIds.ToList().ForEach(x => dt.Rows.Add(x));
-
-			SqlParameters.First().Value = dt;
+			taskIds.ToList().ForEach(x => _guidList.DataTable.Rows.Add(x));
+			SqlParameters.First().Value = _guidList.DataTable;
 	    }
 	}
 }
