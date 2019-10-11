@@ -15,7 +15,7 @@ namespace Fikra.DAL.StoredProcedures
 {
     public class TaskCommentsCountsProcedure : IStoredProcedure
     {
-	    private GuidList _guidList;
+	    private readonly GuidList _guidList;
 	    public readonly string TaskIdsKey = $"@{nameof(Model.QueryEntities.TaskCommentsCount.TaskId)}s";
 	    public string Name => nameof(TaskCommentsCountsProcedure);
 	    public string SqlQuery => $"{Name} {StoredProcedureUtility.GetParametersSignature(this)}";
@@ -39,7 +39,7 @@ namespace Fikra.DAL.StoredProcedures
 			    new SqlParameter(TaskIdsKey, SqlDbType.Structured)
 			    {
 				    Direction = ParameterDirection.Input,
-					TypeName = new GuidList().Name,
+					TypeName = _guidList.Name,
 				    Value = null
 			    }
 		    };

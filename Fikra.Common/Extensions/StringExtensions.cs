@@ -158,5 +158,10 @@ namespace Fikra.Common.Extensions
 			return result;
 
 		}
+
+		public static string ReplaceLastOccurrence(this string source, char oldChar, string newString)
+		{
+			return source.ReplaceLastOccurrence(oldChar.ToString(), newString);
+		}
 	}
 }

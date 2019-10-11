@@ -4,7 +4,9 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Fikra.Common.Constants;
 using Fikra.Common.Extensions;
+using Fikra.DAL.Extensions;
 using Fikra.DAL.Helpers;
 
 namespace Fikra.DAL.Types
@@ -25,7 +27,12 @@ namespace Fikra.DAL.Types
 		{
 			Columns = new List<DataColumn>
 			{
-				new DataColumn {Name = "GUID", Specification = $"{DbTypeUtility.Translate(DbType.Guid)} NOT NULL"}
+				new DataColumn
+				{
+					Name = "GUID",
+					Specification = $"{DbType.Guid.Translate()} " +
+									$"{Constants.DbColumnSpecification.NotNull}"
+				}
 			};
 
 			DataTable = new DataTable();
@@ -40,10 +47,10 @@ namespace Fikra.DAL.Types
 			var builder = new StringBuilder();
 			foreach (var dataColumn in Columns)
 			{
-				builder.Append($"{dataColumn.Name} {dataColumn.Specification}, {Environment.NewLine}");
+				builder.Append($"{dataColumn.Name} {dataColumn.Specification}{Chars.Comma}{Environment.NewLine}");
 			}
 
-			return builder.ToString().ReplaceLastOccurrence(",", "");
+			return builder.ToString().ReplaceLastOccurrence(Chars.Comma, string.Empty);
 		}
 	}
 }

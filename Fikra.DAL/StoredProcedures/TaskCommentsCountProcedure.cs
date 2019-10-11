@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using Fikra.DAL.Extensions;
 using Fikra.DAL.Helpers;
 using Fikra.DAL.Views;
 
@@ -16,8 +17,9 @@ namespace Fikra.DAL.StoredProcedures
 		public string Name => nameof(TaskCommentsCountProcedure);
 		public string SqlQuery => $"{Name} {StoredProcedureUtility.GetParametersSignature(this)}";
 		public ICollection<SqlParameter> SqlParameters { get; set; }
+		//{TaskIdKey} {DbTypeUtility.Translate(DbType.Guid)}
 		public string Body => $@"CREATE PROCEDURE {Name}
-						{TaskIdKey} uniqueidentifier
+						{TaskIdKey} {DbType.Guid.Translate()}
 						AS
 						BEGIN
 							SET NOCOUNT ON;
