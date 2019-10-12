@@ -13,21 +13,21 @@ namespace Fikra.DAL.StoredProcedures
 {
 	public class TaskCommentsCountProcedure : IStoredProcedure
 	{
+		public StoredProcBuilder<TaskCommentsCountProcedure> StoredProcBuilder = new StoredProcBuilder<TaskCommentsCountProcedure>();
 		public readonly string TaskIdKey = $"@{nameof(Model.QueryEntities.TaskCommentsCount.TaskId)}";
 		public string Name => nameof(TaskCommentsCountProcedure);
 		public string SqlQuery => $"{Name} {StoredProcedureUtility.GetParametersSignature(this)}";
 		public ICollection<SqlParameter> SqlParameters { get; set; }
-		//{TaskIdKey} {DbTypeUtility.Translate(DbType.Guid)}
-		public string Body => $@"CREATE PROCEDURE {Name}
-						{TaskIdKey} {DbType.Guid.Translate()}
-						AS
-						BEGIN
-							SET NOCOUNT ON;
-							SELECT *
-							FROM {new TaskCommentsCountView().Name} vtcc
-							WHERE vtcc.TaskId = {TaskIdKey}
-						END";
 
+		public string Body => new StoredProcBuilder<TaskCommentsCountProcedure>()
+							.StoredProc()
+							.Input(new StoredProcInput { Name = TaskIdKey, Spec = DbType.Guid.Translate() })
+							.As()
+							.Begin()
+							.Select("*")
+							.From($"{new TaskCommentsCountView().Name} vtcc")
+							.Where($"vtcc.TaskId = {TaskIdKey}")
+							.End();
 
 		public TaskCommentsCountProcedure()
 		{
