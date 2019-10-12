@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fikra.DAL.Views
+namespace Fikra.DAL.Views.Interfaces
 {
-    public interface IView
+    public interface IViewBuilder<T> where T : IView, new()
     {
-        string Name { get; }
-		string Body { get; }
+        
     }
 }

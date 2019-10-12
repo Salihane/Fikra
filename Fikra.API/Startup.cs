@@ -1,19 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
 using AutoMapper;
 using Fikra.API.Helpers;
 using Fikra.API.Helpers.DashboardTask;
 using Fikra.API.Helpers.ResourceResponse;
 using Fikra.API.Mappers;
 using Fikra.API.Mappers.Interfaces;
-using Fikra.API.Models;
 using Fikra.API.Models.DashboardTask;
 using Fikra.API.Services.Tasks;
-using Fikra.Common.Constants;
-using Fikra.Common.Extensions;
 using Fikra.Common.Helpers;
 using Fikra.DAL;
 using Fikra.DAL.Interfaces;
@@ -22,15 +15,12 @@ using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.OData.Edm;
 
 namespace Fikra.API

@@ -8,7 +8,7 @@ namespace Fikra.DAL.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-	        migrationBuilder.Sql(new TaskCommentsCountProcedure().Body);
+	        migrationBuilder.Sql(new TaskCommentsCountProcedure(new StoredProcBuilder<TaskCommentsCountProcedure>()).Body);
 		}
 
 		protected override void Down(MigrationBuilder migrationBuilder)

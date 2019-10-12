@@ -9,6 +9,6 @@ namespace Fikra.DAL.StoredProcedures
     public class StoredProcInput
     {
 	    public string Name { get; set; }	
-	    public string Spec { get; set; }	
+	    public string Specification { get; set; }	
     }
 }

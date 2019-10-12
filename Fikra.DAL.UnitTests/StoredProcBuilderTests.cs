@@ -4,9 +4,9 @@ using Fikra.DAL.StoredProcedures;
 using Fikra.DAL.Views;
 using NUnit.Framework;
 
-namespace Tests
+namespace Fikra.DAL.UnitTests
 {
-	public class Tests
+	public class StoredProcBuilderTests
 	{
 		[SetUp]
 		public void Setup()
@@ -14,13 +14,7 @@ namespace Tests
 		}
 
 		[Test]
-		public void Test1()
-		{
-			Assert.Pass();
-		}
-
-		[Test]
-		public void BuildStoredProc_TaskCommentsCount_ReturnsStoredProcSuccessfully()
+		public void StoredProcBuilderCreate_TaskCommentsCount_ReturnsStoredProcSuccessfully()
 		{
 			// Arrange
 			var storedProcBuilder = new StoredProcBuilder<TaskCommentsCountProcedure>();
@@ -29,10 +23,10 @@ namespace Tests
 			// Act
 			var storedProc = storedProcBuilder
 			                 .StoredProc()
-			                 .Input(new StoredProcInput { Name = taskIdKey, Spec = DbType.Guid.Translate() })
+			                 .Input(new StoredProcInput { Name = taskIdKey, Specification = DbType.Guid.Translate() })
 			                 .As()
 			                 .Begin()
-			                 .Select("*")
+			                 .SelectAll()
 			                 .From($"{new TaskCommentsCountView().Name} vtcc")
 			                 .Where($"vtcc.TaskId = {taskIdKey}")
 			                 .End();
