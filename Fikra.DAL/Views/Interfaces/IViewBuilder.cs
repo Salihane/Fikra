@@ -8,6 +8,7 @@ namespace Fikra.DAL.Views.Interfaces
 {
     public interface IViewBuilder<T> where T : IView, new()
     {
-        
+	    ViewBuilder<T>.AsBuilder<T> View();
+
     }
 }

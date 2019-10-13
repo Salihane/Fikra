@@ -14,6 +14,7 @@ using Fikra.Common.Helpers;
 using System.Linq.Dynamic.Core;
 using System.Text;
 using Fikra.DAL.StoredProcedures;
+using Fikra.DAL.StoredProcedures.Interfaces;
 using Fikra.Model.QueryEntities;
 using Microsoft.EntityFrameworkCore.Storage;
 

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Fikra.DAL.StoredProcedures
+namespace Fikra.DAL.StoredProcedures.Interfaces
 {
     public interface IStoredProcBuilder<T> where T : IStoredProcedure, new()
     {

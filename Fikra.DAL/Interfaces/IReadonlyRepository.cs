@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Fikra.Common.Helpers;
 using Fikra.DAL.StoredProcedures;
+using Fikra.DAL.StoredProcedures.Interfaces;
 using Fikra.Model.QueryEntities;
 
 namespace Fikra.DAL.Interfaces

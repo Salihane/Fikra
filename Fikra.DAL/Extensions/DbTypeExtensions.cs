@@ -13,7 +13,7 @@ namespace Fikra.DAL.Extensions
 	    {
 		    switch (dbType)
 		    {
-				case DbType.Guid: return Constants.DbTypeConstants.UniqueIdentifier;
+				case DbType.Guid: return Constants.UniqueIdentifier;
 				default: return string.Empty;
 		    }
 	    }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using Fikra.DAL.Extensions;
 using Fikra.DAL.Helpers;
+using Fikra.DAL.StoredProcedures.Interfaces;
 using Fikra.DAL.Views;
 
 namespace Fikra.DAL.StoredProcedures
@@ -15,7 +16,7 @@ namespace Fikra.DAL.StoredProcedures
 	{
 		private readonly IStoredProcBuilder<TaskCommentsCountProcedure> _storedProcBuilder;
 		public readonly string TaskIdKey = $"@{nameof(Model.QueryEntities.TaskCommentsCount.TaskId)}";
-		public string Name => nameof(TaskCommentsCountProcedure);
+		public string Name => DbUtility.GetDbObjectName<TaskCommentsCountProcedure>();
 		public string SqlQuery => $"{Name} {StoredProcedureUtility.GetParametersSignature(this)}";
 		public ICollection<SqlParameter> SqlParameters { get; set; }
 

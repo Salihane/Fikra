@@ -1,6 +1,8 @@
-﻿namespace Fikra.DAL.Views.Interfaces
+﻿using Fikra.DAL.Interfaces;
+
+namespace Fikra.DAL.Views.Interfaces
 {
-    public interface IView
+    public interface IView : IDbObject
     {
         string Name { get; }
 		string Body { get; }

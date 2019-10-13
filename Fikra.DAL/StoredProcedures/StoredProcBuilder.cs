@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Fikra.Common.Constants;
+using Fikra.DAL.StoredProcedures.Interfaces;
 
 namespace Fikra.DAL.StoredProcedures
 {

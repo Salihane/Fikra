@@ -11,10 +11,11 @@ namespace Fikra.DAL.Views
     public class ViewBuilder<T> : IViewBuilder<T> where T : IView, new()
     {
 		private StringBuilder _stringBuilder;
-
+		
 		public AsBuilder<T> View()
 		{
-			_stringBuilder = new StringBuilder($"CREATE VIEW {new T().Name}{Environment.NewLine}");
+			_stringBuilder = new StringBuilder($"{Constants.CreateView} {new T().Name}" +
+			                                   $"{Environment.NewLine}");
 
 			return new AsBuilder<T>(_stringBuilder);
 		}
@@ -33,16 +34,15 @@ namespace Fikra.DAL.Views
 
 			public SelectBuilder<TQ> AsSelect()
 			{
-				StringBuilder.Append($"AS{Environment.NewLine}");
+				StringBuilder.Append($"{Constants.As} {Environment.NewLine}");
 				return new SelectBuilder<TQ>(StringBuilder);
 			}
 
 			public CountBuilder<TQ> AsCount()
 			{
-				StringBuilder.Append($"AS{Environment.NewLine}");
+				StringBuilder.Append($"{Constants.As} {Environment.NewLine}");
 				return new CountBuilder<TQ>(StringBuilder);
 			}
-
 		}
 
 		public class SelectBuilder<TQ> : StatementBuilder<TQ> where TQ : IView, new()
@@ -54,25 +54,25 @@ namespace Fikra.DAL.Views
 
 			public FromBuilder<TQ> SelectFrom(string statement)
 			{
-				StringBuilder.Append($"SELECT {statement}{Environment.NewLine}");
+				StringBuilder.Append($"{Constants.Select} {statement}{Environment.NewLine}");
 				return new FromBuilder<TQ>(StringBuilder);
 			}
 
 			public CountBuilder<TQ> SelectCount(string statement)
 			{
-				StringBuilder.Append($"SELECT {statement}{Environment.NewLine}");
+				StringBuilder.Append($"{Constants.Select} {statement}{Environment.NewLine}");
 				return new CountBuilder<TQ>(StringBuilder);
 			}
 
 			public FromBuilder<TQ> SelectAll()
 			{
-				StringBuilder.Append($"SELECT * {Environment.NewLine}");
+				StringBuilder.Append($"{Constants.SelectAll} {Environment.NewLine}");
 				return new FromBuilder<TQ>(StringBuilder);
 			}
 
 			public FromBuilder<TQ> Count(string statement)
 			{
-				StringBuilder.Append($"COUNT {statement}{Environment.NewLine}");
+				StringBuilder.Append($"{Constants.Count} {statement}{Environment.NewLine}");
 				return new FromBuilder<TQ>(StringBuilder);
 			}
 		}
@@ -86,7 +86,7 @@ namespace Fikra.DAL.Views
 
 			public FromBuilder<TQ> Count(string statement)
 			{
-				StringBuilder.Append($"COUNT {statement}{Environment.NewLine}");
+				StringBuilder.Append($"{Constants.Count} {statement}{Environment.NewLine}");
 				return new FromBuilder<TQ>(StringBuilder);
 			}
 		}
@@ -100,19 +100,19 @@ namespace Fikra.DAL.Views
 
 			public JoinBuilder<TQ> FromJoin(string statement)
 			{
-				StringBuilder.Append($"FROM {statement}{Environment.NewLine}");
+				StringBuilder.Append($"{Constants.From} {statement}{Environment.NewLine}");
 				return new JoinBuilder<TQ>(StringBuilder);
 			}
 
 			public WhereBuilder<TQ> FromWhere(string statement)
 			{
-				StringBuilder.Append($"FROM {statement}{Environment.NewLine}");
+				StringBuilder.Append($"{Constants.From} {statement}{Environment.NewLine}");
 				return new WhereBuilder<TQ>(StringBuilder);
 			}
 
 			public GroupByBuilder<TQ> FromGroupBy(string statement)
 			{
-				StringBuilder.Append($"FROM {statement}{Environment.NewLine}");
+				StringBuilder.Append($"{Constants.From} {statement}{Environment.NewLine}");
 				return new GroupByBuilder<TQ>(StringBuilder);
 			}
 		}
@@ -125,12 +125,12 @@ namespace Fikra.DAL.Views
 			}
 			public string Where(string statement)
 			{
-				StringBuilder.Append($"WHERE {statement}{Environment.NewLine}");
+				StringBuilder.Append($"{Constants.Where} {statement}{Environment.NewLine}");
 				return StringBuilder.ToString();
 			}
 			public GroupByBuilder<TQ> WhereGroupBy(string statement)
 			{
-				StringBuilder.Append($"WHERE {statement}{Environment.NewLine}");
+				StringBuilder.Append($"{Constants.Where} {statement}{Environment.NewLine}");
 				return new GroupByBuilder<TQ>(StringBuilder);
 			}
 		}
@@ -143,12 +143,12 @@ namespace Fikra.DAL.Views
 			}
 			public string Join(string statement)
 			{
-				StringBuilder.Append($"JOIN {statement}{Environment.NewLine}");
+				StringBuilder.Append($"{Constants.Join} {statement}{Environment.NewLine}");
 				return StringBuilder.ToString();
 			}
 			public GroupByBuilder<TQ> JoinGroupBy(string statement)
 			{
-				StringBuilder.Append($"JOIN {statement}{Environment.NewLine}");
+				StringBuilder.Append($"{Constants.Join} {statement}{Environment.NewLine}");
 				return new GroupByBuilder<TQ>(StringBuilder);
 			}
 		}
@@ -161,7 +161,7 @@ namespace Fikra.DAL.Views
 			}
 			public string GroupBy(string statement)
 			{
-				StringBuilder.Append($"GROUP BY {statement}{Environment.NewLine}");
+				StringBuilder.Append($"{Constants.GroupBy} {statement}{Environment.NewLine}");
 				return StringBuilder.ToString();
 			}
 		}

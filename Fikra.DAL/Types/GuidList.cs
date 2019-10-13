@@ -8,17 +8,17 @@ using Fikra.Common.Constants;
 using Fikra.Common.Extensions;
 using Fikra.DAL.Extensions;
 using Fikra.DAL.Helpers;
+using Fikra.DAL.Types.Interfaces;
 
 namespace Fikra.DAL.Types
 {
 	public class GuidList : ITableValued
 	{
-		public string Name => $"[dbo].[{nameof(GuidList)}]";
+		public string Name => DbUtility.GetDbObjectName<GuidList>();
 		public DataTable DataTable { get; }
 		public ICollection<DataColumn> Columns { get; }
 
-		public string Body => $@"CREATE TYPE {Name}
-								AS TABLE
+		public string Body => $@"{Constants.CreateType}{Name}{Constants.AsTable}
 								(
 									{GetColumnsDescription()}
 								)";
@@ -31,7 +31,7 @@ namespace Fikra.DAL.Types
 				{
 					Name = "GUID",
 					Specification = $"{DbType.Guid.Translate()} " +
-									$"{Constants.DbColumnSpecification.NotNull}"
+									$"{Constants.NotNull}"
 				}
 			};
 

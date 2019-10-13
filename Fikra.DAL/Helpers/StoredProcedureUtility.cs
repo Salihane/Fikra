@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Fikra.DAL.StoredProcedures;
+using Fikra.DAL.StoredProcedures.Interfaces;
 
 namespace Fikra.DAL.Helpers
 {
@@ -18,12 +19,6 @@ namespace Fikra.DAL.Helpers
 			{
 				signatureBuilder.Append($"{parameter.ParameterName}, ");
 			}
-			//var keys = storedProcedure.Parameters.Keys.ToList();
-			//var signatureBuilder =new StringBuilder();
-			//foreach (var key in keys)
-			//{
-			//	signatureBuilder.Append($"{key}, ");
-			//}
 
 			// Remove last ', '
 			var signature = signatureBuilder.ToString();
