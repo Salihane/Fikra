@@ -18,7 +18,7 @@ namespace Fikra.DAL.StoredProcedures
 	{
 		private readonly IStoredProcBuilder<TaskCommentsCountsProcedure> _storedProcBuilder;
 		private readonly GuidList _guidList;
-		public readonly string TaskIdsKey = $"@{nameof(Model.QueryEntities.TaskCommentsCount.TaskId)}s";
+		public readonly string TaskIds = $"@{nameof(Model.QueryEntities.TaskCommentsCount.TaskId)}s";
 		public string Name => DbUtility.GetDbObjectName<TaskCommentsCountsProcedure>();
 		public string SqlQuery => $"{Name} {StoredProcedureUtility.GetParametersSignature(this)}";
 		public ICollection<SqlParameter> SqlParameters { get; set; }
@@ -27,14 +27,14 @@ namespace Fikra.DAL.StoredProcedures
 							  .StoredProc()
 							  .Input(new StoredProcInput
 							  {
-								  Name = TaskIdsKey,
-								  Specification = $"{_guidList.Name} READONLY"
+								  Name = TaskIds,
+								  Specification = $"{_guidList.Name} {Constants.ReadOnly}"
 							  })
 							  .As()
 							  .Begin()
 							  .SelectAll()
 							  .From($"{new TaskCommentsCountView().Name} vtcc")
-							  .Where($"vtcc.TaskId IN (SELECT * FROM {TaskIdsKey})")
+							  .Where($"vtcc.TaskId IN ({Constants.SelectAllFrom} {TaskIds})")
 							  .End();
 
 		public TaskCommentsCountsProcedure(IStoredProcBuilder<TaskCommentsCountsProcedure> storedProcBuilder)
@@ -47,7 +47,7 @@ namespace Fikra.DAL.StoredProcedures
 			_guidList = new GuidList();
 			SqlParameters = new Collection<SqlParameter>
 			{
-				new SqlParameter(TaskIdsKey, SqlDbType.Structured)
+				new SqlParameter(TaskIds, SqlDbType.Structured)
 				{
 					Direction = ParameterDirection.Input,
 					TypeName = _guidList.Name,

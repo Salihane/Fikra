@@ -18,7 +18,7 @@ namespace Fikra.DAL.Types
 		public DataTable DataTable { get; }
 		public ICollection<DataColumn> Columns { get; }
 
-		public string Body => $@"{Constants.CreateType}{Name}{Constants.AsTable}
+		public string Body => $@"{Constants.CreateType}{ Name} {Constants.AsTable}
 								(
 									{GetColumnsDescription()}
 								)";
